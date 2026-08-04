@@ -3,89 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>51 CLUB - Official</title>
+    <title>51 CLUB</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; min-height: 100vh; }
+        body { background-color: #334155; color: #1e293b; display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 420px; background: #f8fafc; min-height: 100vh; position: relative; padding-bottom: 70px; box-shadow: 0 0 20px rgba(0,0,0,0.3); }
         
-        /* App Frame */
-        .app-container { width: 100%; max-width: 420px; background: #1e293b; min-height: 100vh; position: relative; padding-bottom: 65px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        
-        /* 51 CLUB Original Top Brand Header */
-        .top-brand { background: linear-gradient(90deg, #d97706, #f59e0b); padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 20px; color: #0f172a; letter-spacing: 0.5px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-        .btn-download-app { background: #0f172a; color: #f59e0b; font-size: 11px; padding: 6px 14px; border-radius: 20px; text-decoration: none; border: 1px solid #f59e0b; font-weight: bold; cursor: pointer; }
+        /* Top Brand Header */
+        .top-brand { background: linear-gradient(90deg, #facc15, #eab308); padding: 14px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 20px; color: #0f172a; position: sticky; top: 0; z-index: 90; }
+        .btn-download-app { background: #0f172a; color: #facc15; font-size: 11px; padding: 6px 14px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; }
 
-        /* View Container Switching */
-        .view { display: none; opacity: 0; transition: opacity 0.2s ease-in-out; }
-        .view.active { display: block; opacity: 1; }
+        /* Navigation Views */
+        .view { display: none; }
+        .view.active { display: block; }
 
-        /* 51 Club Account Header Section */
-        .profile-card { background: linear-gradient(180deg, #d97706 0%, #1e293b 100%); padding: 20px 15px 40px 15px; border-radius: 0 0 20px 20px; }
+        /* Game Cards Grid */
+        .section-title { padding: 15px 15px 8px 15px; font-weight: 700; font-size: 15px; color: #475569; display: flex; align-items: center; gap: 6px; }
+        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 0 15px; margin-bottom: 20px; }
+        .game-card { background: #ffffff; border-radius: 14px; padding: 16px 8px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #f1f5f9; transition: transform 0.1s ease; }
+        .game-card:active { transform: scale(0.96); }
+        .game-icon { font-size: 32px; margin-bottom: 6px; }
+        .game-title { font-size: 12px; font-weight: 700; color: #0f172a; }
+        .rtp-tag { font-size: 10px; color: #d97706; font-weight: 700; background: #fef3c7; padding: 2px 6px; border-radius: 10px; display: inline-block; margin-top: 4px; }
+
+        /* Bottom Nav Bar */
+        .nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 420px; height: 60px; background: #ffffff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #e2e8f0; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #64748b; text-decoration: none; cursor: pointer; flex: 1; font-weight: 600; }
+        .nav-item.active { color: #d97706; font-weight: bold; }
+        .nav-icon { font-size: 20px; margin-bottom: 2px; }
+        .center-spin { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -24px; font-weight: 800; font-size: 10px; text-align: center; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(245,158,11,0.5); cursor: pointer; }
+
+        /* Account / Profile UI */
+        .profile-card { background: linear-gradient(135deg, #facc15, #eab308); padding: 20px 15px 40px 15px; border-radius: 0 0 24px 24px; color: #1e293b; }
         .user-info { display: flex; align-items: center; gap: 12px; }
-        .avatar { width: 54px; height: 54px; border-radius: 50%; border: 2px solid #f59e0b; background: #334155 url('https://api.dicebear.com/7.x/bottts/svg?seed=51club') center/cover; }
-        .vip-tag { background: #0f172a; color: #f59e0b; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: bold; border: 1px solid #f59e0b; }
-        
-        /* Wallet Box */
-        .balance-box { background: #334155; margin: -25px 15px 15px 15px; border-radius: 16px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 1px solid #475569; display: flex; justify-content: space-between; align-items: center; }
-        .bal-title { font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
-        .bal-amount { font-size: 24px; font-weight: 800; color: #facc15; }
+        .avatar { width: 54px; height: 54px; border-radius: 50%; border: 2px solid #fff; background: #0f172a; color: #facc15; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; }
+        .vip-tag { background: #0f172a; color: #facc15; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: bold; margin-left: 5px; }
+        .balance-box { background: white; margin: -25px 15px 15px 15px; border-radius: 16px; padding: 16px; box-shadow: 0 6px 16px rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; }
 
-        /* Action Buttons Grid */
-        .action-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 15px; margin-bottom: 20px; }
-        .action-item { background: #334155; padding: 12px 5px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 600; color: #cbd5e1; cursor: pointer; border: 1px solid #475569; }
-        .action-item:active { transform: scale(0.96); }
+        .action-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 15px; margin-bottom: 15px; }
+        .action-item { background: white; padding: 12px 5px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: 700; color: #334155; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
 
-        /* Games Grid System */
-        .section-title { padding: 15px 15px 8px 15px; font-size: 14px; font-weight: bold; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.5px; }
-        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 15px; margin-bottom: 20px; }
-        .game-card { background: linear-gradient(145deg, #334155, #1e293b); border-radius: 14px; padding: 15px 10px; text-align: center; border: 1px solid #475569; cursor: pointer; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .game-card:active { transform: scale(0.95); }
-        .rtp-tag { font-size: 10px; color: #22c55e; font-weight: bold; margin-top: 6px; }
+        .list-group { background: white; margin: 0 15px 15px 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 15px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; cursor: pointer; font-weight: 600; }
 
-        /* Deposit Form Styling */
-        .deposit-card { background: #334155; margin: 15px; padding: 20px; border-radius: 16px; border: 1px solid #475569; }
-        .dep-input { width: 100%; padding: 14px; background: #0f172a; border: 1px solid #f59e0b; border-radius: 10px; color: #fff; font-size: 18px; font-weight: bold; margin-bottom: 15px; outline: none; }
-        .btn-yellow { width: 100%; padding: 14px; background: linear-gradient(90deg, #d97706, #f59e0b); border: none; border-radius: 25px; color: #0f172a; font-weight: 800; font-size: 15px; cursor: pointer; box-shadow: 0 4px 12px rgba(245,158,11,0.3); }
+        /* Deposit UI Screen */
+        .deposit-container { padding: 15px; }
+        .amount-chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
+        .chip { background: #ffffff; border: 1px solid #cbd5e1; padding: 12px; text-align: center; border-radius: 10px; font-weight: 700; cursor: pointer; }
+        .chip.active { background: #fef3c7; border-color: #facc15; color: #d97706; }
+        .btn-pay { width: 100%; padding: 14px; background: #facc15; border: none; border-radius: 25px; font-weight: 800; font-size: 15px; color: #0f172a; cursor: pointer; box-shadow: 0 4px 12px rgba(250,204,21,0.4); margin-top: 10px; }
 
-        /* Popup Modals */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        /* Modals Overlays */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200; display: none; align-items: center; justify-content: center; padding: 15px; }
         .modal-overlay.active { display: flex; }
-        .modal-box { background: #1e293b; width: 92%; max-width: 380px; border-radius: 20px; padding: 20px; color: #f8fafc; border: 1px solid #f59e0b; max-height: 90vh; overflow-y: auto; }
+        .modal-box { background: white; width: 100%; max-width: 390px; border-radius: 18px; padding: 18px; color: #1e293b; max-height: 90vh; overflow-y: auto; position: relative; }
 
-        /* WinGo Dashboard Rules & Bets */
-        .wingo-header { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 12px 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #334155; }
-        .timer-box { background: #d97706; padding: 6px 12px; border-radius: 8px; color: #0f172a; font-weight: 900; font-size: 20px; font-family: monospace; }
-        .color-group { display: flex; gap: 8px; margin-bottom: 15px; }
-        .c-btn { flex: 1; padding: 12px 5px; border: none; border-radius: 10px; font-weight: bold; color: white; cursor: pointer; font-size: 13px; }
+        /* WinGo Full Screen Trading UI */
+        .wingo-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #1e293b, #0f172a); color: white; padding: 12px 15px; border-radius: 12px; margin-bottom: 15px; }
+        .timer-box { background: #000; padding: 6px 12px; border-radius: 8px; color: #facc15; font-weight: 900; font-size: 20px; font-family: monospace; }
+
+        .color-btn-group { display: flex; gap: 8px; margin-bottom: 12px; }
+        .c-btn { flex: 1; padding: 12px 5px; border: none; border-radius: 8px; font-weight: 800; color: white; cursor: pointer; font-size: 13px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
         .btn-green { background: #22c55e; }
         .btn-violet { background: #a855f7; }
         .btn-red { background: #ef4444; }
 
-        .num-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 15px; }
-        .num-btn { padding: 10px 0; border: 1px solid #475569; border-radius: 8px; font-weight: 800; text-align: center; cursor: pointer; background: #0f172a; font-size: 14px; }
+        .num-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 12px; }
+        .num-btn { padding: 10px 0; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 800; text-align: center; cursor: pointer; background: #f8fafc; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
 
         .bs-group { display: flex; gap: 10px; margin-bottom: 15px; }
-        .bs-btn { flex: 1; padding: 12px; border: none; border-radius: 25px; font-weight: bold; color: white; cursor: pointer; font-size: 14px; }
-        .btn-big { background: #eab308; color: #0f172a; }
+        .bs-btn { flex: 1; padding: 12px; border: none; border-radius: 20px; font-weight: 800; color: white; cursor: pointer; font-size: 14px; }
+        .btn-big { background: #eab308; }
         .btn-small { background: #3b82f6; }
 
-        /* Chips Multiplier Selector */
-        .multiplier-bar { display: flex; gap: 6px; margin-bottom: 15px; justify-content: space-between; }
-        .chip-btn { background: #0f172a; border: 1px solid #475569; color: #94a3b8; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
-        .chip-btn.selected { background: #f59e0b; color: #0f172a; border-color: #f59e0b; }
-
-        /* History Table */
-        .history-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
-        .history-table th, .history-table td { padding: 8px 4px; text-align: center; border-bottom: 1px solid #334155; }
-        .history-table th { color: #f59e0b; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-
-        /* Bottom Fixed Navigation Bar */
-        .nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 420px; height: 60px; background: #0f172a; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #334155; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #64748b; text-decoration: none; cursor: pointer; flex: 1; }
-        .nav-item.active { color: #f59e0b; font-weight: bold; }
-        .nav-icon { font-size: 20px; margin-bottom: 2px; }
-        .center-spin { background: linear-gradient(135deg, #d97706, #ef4444); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -20px; font-weight: 800; font-size: 10px; text-align: center; border: 3px solid #1e293b; box-shadow: 0 4px 15px rgba(217,119,6,0.5); cursor: pointer; }
+        .history-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+        .history-table th, .history-table td { padding: 8px; text-align: center; border-bottom: 1px solid #f1f5f9; font-weight: 600; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
     </style>
 </head>
 <body>
@@ -94,205 +87,206 @@
     <!-- Header -->
     <div class="top-brand">
         <span>51 CLUB</span>
-        <button class="btn-download-app" onclick="showPopup('App Download Started...')">📲 Download App</button>
+        <button class="btn-download-app" onclick="showNotice('Downloading Official 51 CLUB APK...')">📲 Download App</button>
     </div>
 
-    <!-- 1. ACCOUNT VIEW -->
-    <div id="view-account" class="view active">
+    <!-- 1. HOME VIEW (Game Selection) -->
+    <div id="view-home" class="view active">
+        <div class="section-title">🎰 Lottery Games</div>
+        <div class="game-grid">
+            <!-- 1-TAP INSTANT OPEN GAME -->
+            <div class="game-card" onclick="openWinGoModal()">
+                <div class="game-icon">🎰</div>
+                <div class="game-title">WinGo 1Min</div>
+                <div class="rtp-tag">RTP 98.4%</div>
+            </div>
+            <div class="game-card" onclick="showNotice('Aviator Game Server Connecting...')">
+                <div class="game-icon">🚀</div>
+                <div class="game-title">Aviator</div>
+                <div class="rtp-tag">RTP 96.5%</div>
+            </div>
+            <div class="game-card" onclick="showNotice('K3 Lotato Loading...')">
+                <div class="game-icon">🎲</div>
+                <div class="game-title">K3 Lotato</div>
+                <div class="rtp-tag">RTP 97.1%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. ACCOUNT VIEW -->
+    <div id="view-account" class="view">
         <div class="profile-card">
             <div class="user-info">
-                <div class="avatar"></div>
+                <div class="avatar">U</div>
                 <div>
-                    <div style="font-weight: bold; font-size: 16px; color: #fff;">MEMBER_930177 <span class="vip-tag">VIP 1</span></div>
-                    <div style="font-size: 11px; color: #fef08a; margin-top: 2px;">UID | 2110943</div>
+                    <div style="font-weight: 800; font-size: 16px; color: #0f172a;">MEMBER_930177 <span class="vip-tag">VIP 1</span></div>
+                    <div style="font-size: 11px; opacity: 0.8; margin-top: 2px;">UID | 2110943</div>
                 </div>
             </div>
         </div>
 
         <div class="balance-box">
             <div>
-                <div class="bal-title">Total Wallet Balance</div>
-                <div class="bal-amount" id="user-wallet">₹100.00</div>
+                <div style="font-size: 11px; color: #64748b; font-weight: 600;">Total Balance</div>
+                <div style="font-size: 24px; font-weight: 900; color: #0f172a;" id="wallet-balance">₹100.00</div>
             </div>
-            <button style="background: #f59e0b; border: none; padding: 10px 18px; border-radius: 20px; font-weight: 800; font-size: 12px; cursor: pointer; color: #0f172a;" onclick="switchView('deposit')">Recharge</button>
+            <button style="background: #facc15; border: none; padding: 10px 18px; border-radius: 20px; font-weight: 800; font-size: 12px; cursor: pointer; color: #0f172a;" onclick="switchView('deposit')">Deposit</button>
         </div>
 
         <div class="action-grid">
             <div class="action-item" onclick="switchView('deposit')"><div style="font-size: 22px; margin-bottom: 4px;">💳</div>Deposit</div>
             <div class="action-item" onclick="switchView('withdraw')"><div style="font-size: 22px; margin-bottom: 4px;">🏧</div>Withdraw</div>
-            <div class="action-item" onclick="showPopup('VIP Level 1 Active')"><div style="font-size: 22px; margin-bottom: 4px;">💎</div>VIP</div>
-            <div class="action-item" onclick="showPopup('Vault Empty')"><div style="font-size: 22px; margin-bottom: 4px;">🔐</div>Safe Box</div>
+            <div class="action-item" onclick="showNotice('VIP 1 Active. Deposit ₹500 for VIP 2.')"><div style="font-size: 22px; margin-bottom: 4px;">💎</div>VIP</div>
+            <div class="action-item" onclick="showNotice('Safe Box is currently empty.')"><div style="font-size: 22px; margin-bottom: 4px;">🔐</div>Safe</div>
         </div>
-    </div>
 
-    <!-- 2. HOME VIEW (Games) -->
-    <div id="view-home" class="view">
-        <div class="section-title">Popular Lottery Games</div>
-        <div class="game-grid">
-            <div class="game-card" onclick="openWinGoModal()">
-                <div style="font-size: 32px;">🎰</div>
-                <div style="font-size: 13px; font-weight: bold; margin-top: 6px;">WinGo 1Min</div>
-                <div class="rtp-tag">RTP 98.4%</div>
-            </div>
-            <div class="game-card" onclick="showPopup('Aviator Crashed! Loading next round...')">
-                <div style="font-size: 32px;">🚀</div>
-                <div style="font-size: 13px; font-weight: bold; margin-top: 6px;">Aviator</div>
-                <div class="rtp-tag">RTP 96.5%</div>
-            </div>
-            <div class="game-card" onclick="showPopup('K3 Lottery Connecting...')">
-                <div style="font-size: 32px;">🎲</div>
-                <div style="font-size: 13px; font-weight: bold; margin-top: 6px;">K3 Lotato</div>
-                <div class="rtp-tag">RTP 97.1%</div>
-            </div>
+        <div class="list-group">
+            <div class="list-item" onclick="showNotice('Game records updated.')"><span>📊 Game History</span> <span>›</span></div>
+            <div class="list-item" onclick="showNotice('Transaction history clean.')"><span>📝 Transaction History</span> <span>›</span></div>
+            <div class="list-item" onclick="showNotice('Connecting to 24/7 Live Agent...')"><span>🎧 Customer Service</span> <span>›</span></div>
         </div>
     </div>
 
     <!-- 3. DEPOSIT VIEW -->
     <div id="view-deposit" class="view">
-        <div class="section-title">Recharge Wallet</div>
-        <div class="deposit-card">
-            <div style="font-size: 12px; color: #94a3b8; margin-bottom: 8px;">Enter Deposit Amount (₹)</div>
-            <input type="number" id="dep-amt" value="500" class="dep-input">
-            <button class="btn-yellow" onclick="openUtrModal()">Proceed to Pay</button>
+        <div class="deposit-container">
+            <div style="font-weight: 800; font-size: 16px; margin-bottom: 10px;">Deposit Funds</div>
+            <div style="font-size: 12px; color: #64748b;">Select Quick Amount:</div>
+            
+            <div class="amount-chips">
+                <div class="chip" onclick="setDepAmt(100, this)">₹100</div>
+                <div class="chip active" onclick="setDepAmt(500, this)">₹500</div>
+                <div class="chip" onclick="setDepAmt(1000, this)">₹1000</div>
+            </div>
+
+            <input type="number" id="dep-amt-input" value="500" style="width: 100%; padding: 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 16px; font-weight: bold; margin-bottom: 15px;" placeholder="Enter Amount">
+            
+            <button class="btn-pay" onclick="openUtrModal()">Proceed to Pay</button>
         </div>
     </div>
 
     <!-- 4. WITHDRAW VIEW -->
     <div id="view-withdraw" class="view">
-        <div class="section-title">Withdraw Funds</div>
-        <div class="deposit-card">
-            <input type="text" placeholder="Enter UPI ID" class="dep-input" style="font-size: 14px; margin-bottom: 10px;">
-            <input type="number" placeholder="Enter Amount" class="dep-input" style="font-size: 14px;">
-            <button class="btn-yellow" style="opacity: 0.6;" onclick="showPopup('Minimum withdrawal amount is ₹110.')">Withdraw</button>
+        <div class="deposit-container">
+            <div style="font-weight: 800; font-size: 16px; margin-bottom: 10px;">Withdraw Funds</div>
+            <input type="text" placeholder="Enter UPI ID (e.g. name@upi)" style="width: 100%; padding: 14px; border: 1px solid #cbd5e1; border-radius: 10px; margin-bottom: 12px; font-size: 14px;">
+            <input type="number" placeholder="Enter Amount" style="width: 100%; padding: 14px; border: 1px solid #cbd5e1; border-radius: 10px; margin-bottom: 15px; font-size: 14px;">
+            <button class="btn-pay" style="background: #e2e8f0; color: #94a3b8;" onclick="showNotice('Minimum withdrawal amount is ₹110.')">Submit Withdrawal</button>
         </div>
     </div>
 
-    <!-- COMMON POPUP MODAL -->
-    <div class="modal-overlay" id="custom-popup">
+    <!-- POPUP NOTICE MODAL -->
+    <div class="modal-overlay" id="notice-modal">
         <div class="modal-box" style="text-align: center;">
-            <div style="font-size: 16px; font-weight: bold; color: #f59e0b; margin-bottom: 10px;">51 CLUB Notification</div>
-            <div id="popup-text" style="font-size: 14px; color: #cbd5e1; margin-bottom: 20px;">System Message</div>
-            <button class="btn-yellow" style="padding: 8px 30px; width: auto;" onclick="closePopup()">OK</button>
+            <div style="font-size: 16px; font-weight: 800; margin-bottom: 10px;">Notification</div>
+            <div id="notice-msg" style="font-size: 14px; color: #475569; margin-bottom: 20px;">Text</div>
+            <button style="padding: 10px 30px; background: #facc15; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; color: #0f172a;" onclick="closeNotice()">OK</button>
         </div>
     </div>
 
-    <!-- WINGO COLOR TRADING MODAL -->
+    <!-- WINGO FULL TRADING MODAL (OPENS IN 1 TAP) -->
     <div class="modal-overlay" id="wingo-modal">
         <div class="modal-box">
             <div class="wingo-header">
                 <div>
-                    <div style="font-size: 14px; font-weight: 800; color: #f59e0b;">WinGo 1 Min</div>
-                    <div style="font-size: 10px; color: #94a3b8;" id="period-id">Period: 20260804101</div>
+                    <div style="font-size: 14px; font-weight: 800;">WinGo 1 Min</div>
+                    <div style="font-size: 10px; color: #94a3b8;" id="period-id">Period: 202608041001</div>
                 </div>
                 <div class="timer-box" id="wingo-timer">00:45</div>
             </div>
 
-            <!-- Colors -->
-            <div class="color-group">
-                <button class="c-btn btn-green" onclick="setBetTarget('Green')">Green</button>
-                <button class="c-btn btn-violet" onclick="setBetTarget('Violet')">Violet</button>
-                <button class="c-btn btn-red" onclick="setBetTarget('Red')">Red</button>
+            <div class="color-btn-group">
+                <button class="c-btn btn-green" onclick="placeBet('Green')">Green</button>
+                <button class="c-btn btn-violet" onclick="placeBet('Violet')">Violet</button>
+                <button class="c-btn btn-red" onclick="placeBet('Red')">Red</button>
             </div>
 
-            <!-- Number Grid -->
             <div class="num-grid">
-                <div class="num-btn" style="color:#a855f7" onclick="setBetTarget('0')">0</div>
-                <div class="num-btn" style="color:#22c55e" onclick="setBetTarget('1')">1</div>
-                <div class="num-btn" style="color:#ef4444" onclick="setBetTarget('2')">2</div>
-                <div class="num-btn" style="color:#22c55e" onclick="setBetTarget('3')">3</div>
-                <div class="num-btn" style="color:#ef4444" onclick="setBetTarget('4')">4</div>
-                <div class="num-btn" style="color:#a855f7" onclick="setBetTarget('5')">5</div>
-                <div class="num-btn" style="color:#ef4444" onclick="setBetTarget('6')">6</div>
-                <div class="num-btn" style="color:#22c55e" onclick="setBetTarget('7')">7</div>
-                <div class="num-btn" style="color:#ef4444" onclick="setBetTarget('8')">8</div>
-                <div class="num-btn" style="color:#22c55e" onclick="setBetTarget('9')">9</div>
+                <div class="num-btn" style="color:#a855f7" onclick="placeBet('0')">0</div>
+                <div class="num-btn" style="color:#22c55e" onclick="placeBet('1')">1</div>
+                <div class="num-btn" style="color:#ef4444" onclick="placeBet('2')">2</div>
+                <div class="num-btn" style="color:#22c55e" onclick="placeBet('3')">3</div>
+                <div class="num-btn" style="color:#ef4444" onclick="placeBet('4')">4</div>
+                <div class="num-btn" style="color:#a855f7" onclick="placeBet('5')">5</div>
+                <div class="num-btn" style="color:#ef4444" onclick="placeBet('6')">6</div>
+                <div class="num-btn" style="color:#22c55e" onclick="placeBet('7')">7</div>
+                <div class="num-btn" style="color:#ef4444" onclick="placeBet('8')">8</div>
+                <div class="num-btn" style="color:#22c55e" onclick="placeBet('9')">9</div>
             </div>
 
-            <!-- Big / Small -->
             <div class="bs-group">
-                <button class="bs-btn btn-big" onclick="setBetTarget('Big')">Big</button>
-                <button class="bs-btn btn-small" onclick="setBetTarget('Small')">Small</button>
+                <button class="bs-btn btn-big" onclick="placeBet('Big')">Big</button>
+                <button class="bs-btn btn-small" onclick="placeBet('Small')">Small</button>
             </div>
 
-            <!-- Multipliers -->
-            <div class="multiplier-bar">
-                <div class="chip-btn selected" onclick="setMultiplier(1, this)">₹10</div>
-                <div class="chip-btn" onclick="setMultiplier(5, this)">₹50</div>
-                <div class="chip-btn" onclick="setMultiplier(10, this)">₹100</div>
-                <div class="chip-btn" onclick="setMultiplier(50, this)">₹500</div>
-            </div>
-
-            <button class="btn-yellow" id="confirm-bet-btn" onclick="processBet()">Place Bet (₹10)</button>
-            <button style="width: 100%; padding: 8px; background: transparent; border: none; color: #94a3b8; font-weight: bold; cursor: pointer; margin-top: 10px;" onclick="closeWinGoModal()">Close</button>
-
-            <!-- Parity History -->
-            <div style="font-size: 12px; font-weight: bold; margin-top: 15px; color: #f59e0b;">Game Results History</div>
+            <div style="font-size: 13px; font-weight: 800; margin-top: 10px;">Game History</div>
             <table class="history-table">
                 <thead>
                     <tr>
                         <th>Period</th>
                         <th>Number</th>
                         <th>Big/Small</th>
-                        <th>Result</th>
+                        <th>Color</th>
                     </tr>
                 </thead>
                 <tbody id="history-rows">
-                    <tr><td>...100</td><td>7</td><td>Big</td><td><span class="dot" style="background:#22c55e"></span></td></tr>
-                    <tr><td>...099</td><td>2</td><td>Small</td><td><span class="dot" style="background:#ef4444"></span></td></tr>
+                    <tr><td>...1001</td><td>7</td><td>Big</td><td><span class="dot" style="background:#22c55e"></span></td></tr>
+                    <tr><td>...1000</td><td>2</td><td>Small</td><td><span class="dot" style="background:#ef4444"></span></td></tr>
+                    <tr><td>...0999</td><td>0</td><td>Small</td><td><span class="dot" style="background:#a855f7"></span></td></tr>
                 </tbody>
             </table>
+
+            <button style="width: 100%; padding: 12px; background: #f1f5f9; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 15px; color: #475569;" onclick="closeWinGoModal()">Close Game</button>
         </div>
     </div>
 
-    <!-- UTR RECHARGE MODAL -->
+    <!-- UTR INPUT MODAL -->
     <div class="modal-overlay" id="utr-modal">
         <div class="modal-box">
-            <div style="font-weight: bold; font-size: 16px; color: #f59e0b; margin-bottom: 10px;">UTR Payment Reference</div>
-            <p style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">Pay via UPI & enter the 12-digit UTR Ref number below:</p>
-            <input type="text" id="utr-code" placeholder="12-digit UTR Number" maxlength="12" class="dep-input" style="font-size: 14px;">
-            <button class="btn-yellow" onclick="submitUtr()">Submit Payment</button>
-            <button style="width: 100%; padding: 8px; background: transparent; border: none; color: #94a3b8; font-weight: bold; cursor: pointer; margin-top: 8px;" onclick="closeUtrModal()">Cancel</button>
+            <div style="font-weight: 800; font-size: 16px; margin-bottom: 12px;">Enter UTR Reference</div>
+            <input type="text" id="utr-code" placeholder="Enter 12-digit UTR Number" maxlength="12" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px; font-size: 14px;">
+            <div style="display: flex; gap: 10px;">
+                <button style="flex: 1; padding: 12px; background: #f1f5f9; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;" onclick="closeUtrModal()">Cancel</button>
+                <button style="flex: 1; padding: 12px; background: #facc15; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; color: #0f172a;" onclick="submitUtr()">Submit UTR</button>
+            </div>
         </div>
     </div>
 
     <!-- Bottom Nav Bar -->
     <div class="nav-bar">
-        <div class="nav-item" onclick="switchView('home')"><span class="nav-icon">🏠</span>Home</div>
-        <div class="nav-item" onclick="showPopup('Activity Bonus Active!')"><span class="nav-icon">🎁</span>Activity</div>
-        <div class="center-spin" onclick="showPopup('Spin Wheel Coming Soon!')">Get<br>₹500</div>
-        <div class="nav-item" onclick="showPopup('Referral Code Copied!')"><span class="nav-icon">📢</span>Promotion</div>
-        <div class="nav-item active" onclick="switchView('account')"><span class="nav-icon">👤</span>Account</div>
+        <div class="nav-item active" id="nav-home" onclick="switchView('home')"><span class="nav-icon">🏠</span>Home</div>
+        <div class="nav-item" onclick="showNotice('Activity bonus unlocked!')"><span class="nav-icon">🎁</span>Activity</div>
+        <div class="center-spin" onclick="showNotice('Daily Spin Bonus Available!')">Get<br>₹500</div>
+        <div class="nav-item" onclick="showNotice('Referral code copied!')"><span class="nav-icon">📢</span>Promotion</div>
+        <div class="nav-item" id="nav-account" onclick="switchView('account')"><span class="nav-icon">👤</span>Account</div>
     </div>
 </div>
 
 <script>
-    let walletBalance = 100.00;
     let timerInterval = null;
     let timeLeft = 60;
-    let currentPeriod = 20260804101;
-    let selectedTarget = null;
-    let currentBetAmount = 10;
-
-    function updateWalletDisplay() {
-        document.getElementById('user-wallet').innerText = '₹' + walletBalance.toFixed(2);
-    }
+    let balance = 100.00;
 
     function switchView(viewName) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById('view-' + viewName).classList.add('active');
+        
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        if(document.getElementById('nav-' + viewName)) {
+            document.getElementById('nav-' + viewName).classList.add('active');
+        }
     }
 
-    function showPopup(text) {
-        document.getElementById('popup-text').innerText = text;
-        document.getElementById('custom-popup').classList.add('active');
+    function showNotice(msg) {
+        document.getElementById('notice-msg').innerText = msg;
+        document.getElementById('notice-modal').classList.add('active');
     }
 
-    function closePopup() {
-        document.getElementById('custom-popup').classList.remove('active');
+    function closeNotice() {
+        document.getElementById('notice-modal').classList.remove('active');
     }
 
-    /* WinGo Timer Engine */
+    /* 1-TAP INSTANT WINGO OPEN */
     function openWinGoModal() {
         document.getElementById('wingo-modal').classList.add('active');
         if(!timerInterval) {
@@ -308,27 +302,22 @@
         timeLeft--;
         if(timeLeft <= 0) {
             timeLeft = 60;
-            currentPeriod++;
-            document.getElementById('period-id').innerText = 'Period: ' + currentPeriod;
-            resolveRoundResult();
+            addSimulatedHistory();
         }
         let sec = timeLeft < 10 ? '0' + timeLeft : timeLeft;
         document.getElementById('wingo-timer').innerText = '00:' + sec;
-
-        // 5 Second Freeze Logic
-        if(timeLeft <= 5) {
-            document.getElementById('confirm-bet-btn').style.opacity = '0.5';
-            document.getElementById('confirm-bet-btn').innerText = 'Round Freezing...';
-        } else if(selectedTarget) {
-            document.getElementById('confirm-bet-btn').style.opacity = '1';
-            document.getElementById('confirm-bet-btn').innerText = `Place Bet on ${selectedTarget} (₹${currentBetAmount})`;
-        }
     }
 
-    function setBetTarget(target) {
+    function placeBet(target) {
         if(timeLeft <= 5) {
-            showPopup('Round Freezing! Bet placing is locked for this cycle.');
+            showNotice('Round Freezing! Bet closed for current cycle.');
             return;
         }
-        selectedTarget = target;
-        document.getElementById('confirm-bet-btn').innerText = `Place Bet on ${selectedTarget} (₹
+        if(balance < 10) {
+            showNotice('Insufficient balance! Please deposit funds.');
+            return;
+        }
+        balance -= 10;
+        document.getElementById('wallet-balance').innerText = '₹' + balance.toFixed(2);
+        showNotice('Bet of ₹10 placed on: ' + target);
+    
