@@ -5,81 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>99LOTTERY</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: #7f8c8d; color: #333; display: flex; justify-content: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 420px; background: #f5f5f5; min-height: 100vh; position: relative; padding-bottom: 65px; }
+        .app-container { width: 100%; max-width: 420px; background: #f8fafc; min-height: 100vh; position: relative; padding-bottom: 65px; }
         
-        /* Top Header */
-        .top-brand { background: #facc15; padding: 12px 15px; text-align: center; font-weight: bold; font-size: 20px; color: #1e293b; letter-spacing: 1px; }
+        /* Header */
+        .top-brand { background: #facc15; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 18px; color: #1e293b; }
+        .btn-download-app { background: #1e293b; color: #facc15; font-size: 11px; padding: 5px 10px; border-radius: 20px; text-decoration: none; border: none; font-weight: bold; cursor: pointer; }
 
-        /* Views management */
+        /* Navigation Views */
         .view { display: none; }
         .view.active { display: block; }
 
         /* Bottom Nav */
         .nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 420px; height: 60px; background: #ffffff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #e2e8f0; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #64748b; text-decoration: none; cursor: pointer; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #64748b; text-decoration: none; cursor: pointer; flex: 1; }
         .nav-item.active { color: #eab308; font-weight: bold; }
         .nav-icon { font-size: 18px; margin-bottom: 2px; }
         .center-spin { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -20px; font-weight: bold; font-size: 10px; text-align: center; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; }
 
-        /* Register / Login Page */
+        /* Auth Screen */
         .auth-card { background: white; padding: 20px; margin: 15px; border-radius: 12px; }
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 12px; color: #64748b; margin-bottom: 4px; }
         .input-box { display: flex; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; }
         .input-box input { border: none; background: transparent; outline: none; width: 100%; font-size: 14px; margin-left: 8px; }
-        .btn-otp { background: #facc15; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap; }
+        .btn-otp { background: #facc15; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; }
         .btn-yellow { width: 100%; padding: 12px; background: #facc15; border: none; border-radius: 20px; font-weight: bold; font-size: 15px; color: #1e293b; cursor: pointer; margin-top: 10px; }
 
-        /* Home Page */
-        .banner { background: linear-gradient(135deg, #fde047, #f59e0b); padding: 20px 15px; border-radius: 0 0 15px 15px; color: #78350f; font-weight: bold; }
+        /* Home Page & Categories */
+        .banner { background: linear-gradient(135deg, #fde047, #f59e0b); padding: 18px 15px; color: #78350f; font-weight: bold; }
         .cat-tabs { display: flex; gap: 8px; overflow-x: auto; padding: 10px 15px; background: white; margin-bottom: 10px; }
-        .cat-chip { padding: 6px 14px; background: #f1f5f9; border-radius: 15px; font-size: 12px; font-weight: bold; white-space: nowrap; }
+        .cat-chip { padding: 6px 14px; background: #f1f5f9; border-radius: 15px; font-size: 12px; font-weight: bold; white-space: nowrap; cursor: pointer; }
         .cat-chip.active { background: #facc15; color: #0f172a; }
-        .game-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 15px; margin-bottom: 15px; }
+        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 15px; margin-bottom: 15px; }
         .game-card { background: white; border-radius: 10px; padding: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; }
-        .game-title { font-size: 13px; font-weight: bold; margin-top: 5px; }
+        .game-title { font-size: 12px; font-weight: bold; margin-top: 5px; }
 
-        /* WinGo Mode Selector Header (Tabs like Screenshot 2) */
+        /* WinGo View */
         .time-tabs { display: flex; background: white; margin: 10px; border-radius: 12px; padding: 5px; justify-content: space-between; }
         .time-tab { flex: 1; text-align: center; padding: 8px 4px; font-size: 11px; font-weight: bold; color: #64748b; border-radius: 8px; cursor: pointer; }
-        .time-tab.active { background: #facc15; color: #1e293b; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        
-        /* WinGo Yellow Card Header */
+        .time-tab.active { background: #facc15; color: #1e293b; }
         .wingo-card { background: #facc15; border-radius: 15px; margin: 10px; padding: 12px; color: #78350f; }
         .recent-results { display: flex; gap: 4px; margin-top: 5px; }
         .res-ball { width: 20px; height: 20px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; }
 
-        /* Color Choice Buttons */
+        /* Betting Controls */
         .color-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 10px; }
         .c-btn { border: none; padding: 10px; border-radius: 8px; font-weight: bold; color: white; cursor: pointer; font-size: 13px; }
         .bg-green { background: #22c55e; }
         .bg-violet { background: #a855f7; }
         .bg-red { background: #ef4444; }
-
-        /* Ball Numbers 0-9 Card */
-        .balls-box { background: #f8fafc; border-radius: 12px; margin: 10px; padding: 12px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-        .num-ball-lg { aspect-ratio: 1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; color: white; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
-
-        /* Multiplier Toolbar */
+        .balls-box { background: #ffffff; border-radius: 12px; margin: 10px; padding: 12px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .num-ball-lg { aspect-ratio: 1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 15px; color: white; cursor: pointer; }
         .mult-bar { display: flex; gap: 5px; margin: 10px; overflow-x: auto; }
         .m-chip { flex: 1; min-width: 45px; text-align: center; padding: 6px 0; background: white; border-radius: 6px; font-size: 11px; font-weight: bold; color: #475569; border: 1px solid #e2e8f0; cursor: pointer; }
         .m-chip.active { background: #22c55e; color: white; border-color: #22c55e; }
-
-        /* Big / Small Choice */
         .bs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px; }
         .btn-big { background: #f59e0b; color: white; border: none; padding: 12px; border-radius: 20px 0 0 20px; font-weight: bold; font-size: 14px; cursor: pointer; }
         .btn-small { background: #3b82f6; color: white; border: none; padding: 12px; border-radius: 0 20px 20px 0; font-weight: bold; font-size: 14px; cursor: pointer; }
 
-        /* History Table */
+        /* History & Chart Section */
         .history-card { background: white; margin: 10px; border-radius: 12px; overflow: hidden; font-size: 12px; }
+        .history-nav { display: flex; border-bottom: 2px solid #e2e8f0; }
+        .history-nav-tab { flex: 1; padding: 10px; text-align: center; font-weight: bold; color: #64748b; cursor: pointer; }
+        .history-nav-tab.active { color: #1e293b; border-bottom: 2px solid #facc15; }
         .tab-head { display: flex; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #64748b; }
-        .tab-head div { flex: 1; padding: 10px; text-align: center; }
+        .tab-head div { flex: 1; padding: 8px; text-align: center; }
         .tab-row { display: flex; border-bottom: 1px solid #f1f5f9; align-items: center; }
-        .tab-row div { flex: 1; padding: 10px; text-align: center; font-size: 11px; }
+        .tab-row div { flex: 1; padding: 8px; text-align: center; font-size: 11px; }
 
-        /* Modals / Overlays */
+        /* Modals & Overlays */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; display: none; align-items: flex-end; }
         .modal-overlay.active { display: flex; }
         .sheet { background: white; width: 100%; max-width: 420px; border-radius: 16px 16px 0 0; padding: 15px; margin: 0 auto; color: #1e293b; }
@@ -87,38 +83,37 @@
         .opt-btn { flex: 1; padding: 8px; background: #f1f5f9; border-radius: 6px; text-align: center; font-size: 12px; cursor: pointer; font-weight: bold; }
         .opt-btn.active { background: #3b82f6; color: white; }
 
-        /* Wheel Modal */
+        /* Spin Wheel Modal */
         .wheel-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 250; display: none; justify-content: center; align-items: center; }
         .wheel-modal.active { display: flex; }
         .wheel-box { background: white; width: 90%; max-width: 340px; border-radius: 16px; padding: 20px; text-align: center; }
-        .wheel-circle { width: 220px; height: 220px; border-radius: 50%; border: 8px solid #facc15; margin: 15px auto; position: relative; background: conic-gradient(#ef4444 0deg 60deg, #3b82f6 60deg 120deg, #22c55e 120deg 180deg, #f59e0b 180deg 240deg, #a855f7 240deg 300deg, #ec4899 300deg 360deg); transition: transform 3s cubic-bezier(0.15, 0.9, 0.15, 1); }
+        .wheel-circle { width: 200px; height: 200px; border-radius: 50%; border: 6px solid #facc15; margin: 15px auto; position: relative; background: conic-gradient(#ef4444 0deg 60deg, #3b82f6 60deg 120deg, #22c55e 120deg 180deg, #f59e0b 180deg 240deg, #a855f7 240deg 300deg, #ec4899 300deg 360deg); transition: transform 3s cubic-bezier(0.15, 0.9, 0.15, 1); }
 
-        /* Wallet / Deposit / Withdraw */
+        /* Wallet & Cards */
         .wallet-card { background: #facc15; padding: 15px; margin: 15px; border-radius: 12px; color: #78350f; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 15px; }
-        .tile-btn { background: white; padding: 12px; border-radius: 8px; text-align: center; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-
-        /* Account */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 15px; }
+        .tile-btn { background: white; padding: 12px; border-radius: 8px; text-align: center; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); cursor: pointer; }
         .list-group { background: white; margin: 15px; border-radius: 12px; overflow: hidden; }
-        .list-item { display: flex; justify-content: space-between; padding: 12px 15px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+        .list-item { display: flex; justify-content: space-between; padding: 12px 15px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <div class="top-brand">99LOTTERY</div>
+    <!-- Header -->
+    <div class="top-brand">
+        <span>99LOTTERY</span>
+        <button class="btn-download-app" onclick="triggerAppDownload()">📲 Download App</button>
+    </div>
 
-    <!-- 1. REGISTER / LOGIN VIEW -->
+    <!-- 1. AUTHENTICATION -->
     <div id="view-auth" class="view active">
         <div class="auth-card">
             <h3 style="margin-bottom: 15px; text-align: center;">Register / Login</h3>
             <div class="form-group">
                 <label>Phone number</label>
-                <div class="input-box">
-                    <span>+91</span>
-                    <input type="text" id="auth-phone" placeholder="Please enter phone number">
-                </div>
+                <div class="input-box"><span>+91</span><input type="text" id="auth-phone" placeholder="Please enter phone number"></div>
             </div>
             <div class="form-group">
                 <label>Verification Code</label>
@@ -128,16 +123,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>Set password</label>
-                <div class="input-box"><input type="password" id="auth-pass" placeholder="Set password"></div>
-            </div>
-            <div class="form-group">
-                <label>Confirm password</label>
-                <div class="input-box"><input type="password" id="auth-pass-confirm" placeholder="Confirm password"></div>
-            </div>
-            <div class="form-group">
-                <label>Invite code</label>
-                <div class="input-box"><input type="text" id="auth-invite" value="42842106017"></div>
+                <label>Password</label>
+                <div class="input-box"><input type="password" id="auth-pass" placeholder="Enter password"></div>
             </div>
             <button class="btn-yellow" onclick="handleAuthSubmit()">Register / Login</button>
         </div>
@@ -146,40 +133,42 @@
     <!-- 2. HOME VIEW -->
     <div id="view-home" class="view">
         <div class="banner">🎮 99LOTTERY Official Platform</div>
+        
+        <!-- Category Tabs -->
         <div class="cat-tabs">
-            <div class="cat-chip active">All</div>
-            <div class="cat-chip">Lottery</div>
-            <div class="cat-chip">Original</div>
-            <div class="cat-chip">Casino</div>
-            <div class="cat-chip">Slots</div>
+            <div class="cat-chip active" onclick="filterCategory('all', this)">All</div>
+            <div class="cat-chip" onclick="filterCategory('lottery', this)">Lottery</div>
+            <div class="cat-chip" onclick="filterCategory('original', this)">Original</div>
+            <div class="cat-chip" onclick="filterCategory('casino', this)">Casino</div>
+            <div class="cat-chip" onclick="filterCategory('slots', this)">Slots</div>
         </div>
-        <div style="padding:0 15px; font-weight:bold; font-size:14px; margin-bottom:10px;">Lottery Games</div>
+
+        <div style="padding:0 15px; font-weight:bold; font-size:13px; margin-bottom:8px; color:#475569;">Lottery Games</div>
         <div class="game-grid">
             <div class="game-card" onclick="openWinGo()">
                 <div style="font-size:24px;">🎰</div>
                 <div class="game-title">WinGo</div>
             </div>
-            <div class="game-card" onclick="alert('K3 coming soon')">
+            <div class="game-card" onclick="showGamePopup('K3')">
                 <div style="font-size:24px;">🎲</div>
                 <div class="game-title">K3</div>
             </div>
-            <div class="game-card" onclick="alert('5D coming soon')">
+            <div class="game-card" onclick="showGamePopup('5D')">
                 <div style="font-size:24px;">🔢</div>
                 <div class="game-title">5D</div>
             </div>
         </div>
 
-        <div style="padding:0 15px; font-weight:bold; font-size:14px; margin-bottom:10px;">Popular Games</div>
+        <div style="padding:0 15px; font-weight:bold; font-size:13px; margin-bottom:8px; color:#475569;">Popular Games</div>
         <div class="game-grid">
-            <div class="game-card"><div style="font-size:24px;">🚀</div><div class="game-title">Aviator</div></div>
-            <div class="game-card"><div style="font-size:24px;">🏏</div><div class="game-title">Cricket</div></div>
-            <div class="game-card"><div style="font-size:24px;">🎯</div><div class="game-title">Vortex</div></div>
+            <div class="game-card" onclick="showGamePopup('Aviator')"><div style="font-size:24px;">🚀</div><div class="game-title">Aviator</div></div>
+            <div class="game-card" onclick="showGamePopup('Cricket')"><div style="font-size:24px;">🏏</div><div class="game-title">Cricket</div></div>
+            <div class="game-card" onclick="showGamePopup('Vortex')"><div style="font-size:24px;">🎯</div><div class="game-title">Vortex</div></div>
         </div>
     </div>
 
-    <!-- 3. WINGO GAME VIEW (EXACT LIKE SCREENSHOT) -->
+    <!-- 3. WINGO VIEW -->
     <div id="view-wingo" class="view">
-        <!-- Time Mode Tabs -->
         <div class="time-tabs">
             <div class="time-tab" onclick="switchTimeMode(30, this)">WinGo 30sec</div>
             <div class="time-tab active" onclick="switchTimeMode(60, this)">WinGo 1Min</div>
@@ -187,13 +176,12 @@
             <div class="time-tab" onclick="switchTimeMode(300, this)">WinGo 5Min</div>
         </div>
 
-        <!-- Yellow WinGo Header Card -->
         <div class="wingo-card">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <div>
-                    <div style="font-size:12px; background:rgba(255,255,255,0.4); padding:3px 8px; border-radius:10px; display:inline-block;">📖 How to play</div>
+                    <div style="font-size:11px; background:rgba(255,255,255,0.4); padding:3px 8px; border-radius:10px; display:inline-block;" onclick="alert('Rule: Predict Green/Violet/Red or Big/Small')">📖 How to play</div>
                     <div style="font-size:12px; font-weight:bold; margin-top:8px;" id="mode-title-display">WinGo 1Min</div>
-                    <div class="recent-results" id="recent-balls-bar">
+                    <div class="recent-results">
                         <div class="res-ball bg-green">1</div>
                         <div class="res-ball bg-red">2</div>
                         <div class="res-ball bg-violet">5</div>
@@ -203,20 +191,18 @@
                 </div>
                 <div style="text-align:right;">
                     <div style="font-size:11px; font-weight:bold;">Time remaining</div>
-                    <div style="font-size:22px; font-weight:bold; letter-spacing:2px; margin-top:2px;" id="wingo-timer">00:47</div>
-                    <div style="font-size:10px; font-weight:bold; margin-top:4px;" id="wingo-period">20260804100010689</div>
+                    <div style="font-size:22px; font-weight:bold; letter-spacing:1px;" id="wingo-timer">00:47</div>
+                    <div style="font-size:10px; font-weight:bold; margin-top:2px;" id="wingo-period">20260804100010689</div>
                 </div>
             </div>
         </div>
 
-        <!-- Color Prediction Buttons -->
         <div class="color-btns">
             <button class="c-btn bg-green" onclick="openBetSheet('Green')">Green</button>
             <button class="c-btn bg-violet" onclick="openBetSheet('Violet')">Violet</button>
             <button class="c-btn bg-red" onclick="openBetSheet('Red')">Red</button>
         </div>
 
-        <!-- Ball Numbers 0-9 Box -->
         <div class="balls-box">
             <div class="num-ball-lg bg-violet" onclick="openBetSheet('0')">0</div>
             <div class="num-ball-lg bg-green" onclick="openBetSheet('1')">1</div>
@@ -230,56 +216,57 @@
             <div class="num-ball-lg bg-red" onclick="openBetSheet('9')">9</div>
         </div>
 
-        <!-- Multiplier Toolbar -->
         <div class="mult-bar">
             <div class="m-chip" style="color:#ef4444; border-color:#ef4444;" onclick="openBetSheet('Random')">Random</div>
-            <div class="m-chip active">X1</div>
-            <div class="m-chip">X5</div>
-            <div class="m-chip">X10</div>
-            <div class="m-chip">X20</div>
-            <div class="m-chip">X50</div>
-            <div class="m-chip">X100</div>
+            <div class="m-chip active" onclick="openBetSheet('X1')">X1</div>
+            <div class="m-chip" onclick="openBetSheet('X5')">X5</div>
+            <div class="m-chip" onclick="openBetSheet('X10')">X10</div>
+            <div class="m-chip" onclick="openBetSheet('X20')">X20</div>
+            <div class="m-chip" onclick="openBetSheet('X50')">X50</div>
+            <div class="m-chip" onclick="openBetSheet('X100')">X100</div>
         </div>
 
-        <!-- Big / Small Buttons -->
         <div class="bs-grid">
             <button class="btn-big" onclick="openBetSheet('Big')">Big</button>
             <button class="btn-small" onclick="openBetSheet('Small')">Small</button>
         </div>
 
-        <!-- History Table Section -->
+        <!-- History & Chart Sub-Tabs -->
         <div class="history-card">
-            <div style="display:flex; border-bottom:2px solid #facc15;">
-                <div style="padding:10px; font-weight:bold; color:#1e293b; border-bottom:2px solid #facc15; flex:1; text-align:center;">Game history</div>
-                <div style="padding:10px; color:#64748b; flex:1; text-align:center;">Chart</div>
-                <div style="padding:10px; color:#64748b; flex:1; text-align:center;">My history</div>
+            <div class="history-nav">
+                <div class="history-nav-tab active" id="tab-game-hist" onclick="switchHistoryTab('game')">Game history</div>
+                <div class="history-nav-tab" id="tab-chart" onclick="switchHistoryTab('chart')">Chart</div>
+                <div class="history-nav-tab" id="tab-my-hist" onclick="switchHistoryTab('my')">My history</div>
             </div>
 
-            <div class="tab-head">
-                <div>Period</div>
-                <div>Number</div>
-                <div>Big Small</div>
-                <div>Color</div>
+            <!-- Game History Panel -->
+            <div id="panel-game-history">
+                <div class="tab-head">
+                    <div>Period</div>
+                    <div>Number</div>
+                    <div>Big Small</div>
+                    <div>Color</div>
+                </div>
+                <div>
+                    <div class="tab-row"><div>20260804100010688</div><div style="font-weight:bold; color:#22c55e;">1</div><div>Small</div><div>🟢</div></div>
+                    <div class="tab-row"><div>20260804100010687</div><div style="font-weight:bold; color:#ef4444;">2</div><div>Small</div><div>🔴</div></div>
+                    <div class="tab-row"><div>20260804100010686</div><div style="font-weight:bold; color:#a855f7;">5</div><div>Big</div><div>🟣</div></div>
+                </div>
             </div>
 
-            <div id="history-rows">
-                <div class="tab-row">
-                    <div>20260804100010688</div>
-                    <div style="font-weight:bold; color:#22c55e;">1</div>
-                    <div>Small</div>
-                    <div><span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#22c55e;"></span></div>
+            <!-- Chart Panel -->
+            <div id="panel-chart" style="display:none; padding:15px; text-align:center;">
+                <div style="font-size:12px; color:#64748b; margin-bottom:10px;">Live Trend Analysis Chart</div>
+                <div style="background:#f1f5f9; height:120px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-weight:bold;">
+                    📈 WinGo Trend Line (Active)
                 </div>
-                <div class="tab-row">
-                    <div>20260804100010687</div>
-                    <div style="font-weight:bold; color:#ef4444;">2</div>
-                    <div>Small</div>
-                    <div><span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#ef4444;"></span></div>
-                </div>
-                <div class="tab-row">
-                    <div>20260804100010686</div>
-                    <div style="font-weight:bold; color:#a855f7;">5</div>
-                    <div>Big</div>
-                    <div><span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#a855f7;"></span></div>
+            </div>
+
+            <!-- My History Panel -->
+            <div id="panel-my-history" style="display:none;">
+                <div class="tab-head"><div>Period</div><div>Select</div><div>Amount</div><div>Result</div></div>
+                <div id="my-bets-list">
+                    <div style="padding:20px; text-align:center; color:#94a3b8; font-size:12px;">No betting history yet</div>
                 </div>
             </div>
         </div>
@@ -287,57 +274,53 @@
 
     <!-- 4. ACTIVITY VIEW -->
     <div id="view-activity" class="view">
-        <div style="padding:15px; font-weight:bold; font-size:16px;">Activity Center</div>
+        <div style="padding:15px; font-weight:bold;">Activity Center</div>
         <div class="list-group">
-            <div class="list-item"><span>Gifts Code</span> <span>›</span></div>
-            <div class="list-item"><span>Attendance Bonus</span> <span>›</span></div>
-            <div class="list-item"><span>VIP Level Bonus</span> <span>›</span></div>
+            <div class="list-item" onclick="openActivityModal('Gifts Code')"><span>Gifts Code</span> <span>›</span></div>
+            <div class="list-item" onclick="openActivityModal('Attendance Bonus')"><span>Attendance Bonus</span> <span>›</span></div>
+            <div class="list-item" onclick="openActivityModal('VIP Level Bonus')"><span>VIP Level Bonus</span> <span>›</span></div>
         </div>
     </div>
 
-    <!-- 5. PROMOTION / AGENCY VIEW -->
+    <!-- 5. PROMOTION VIEW -->
     <div id="view-promotion" class="view">
         <div class="wallet-card">
             <div style="font-size:12px;">Yesterday's Total Commission</div>
             <div style="font-size:24px; font-weight:bold;">₹0.00</div>
         </div>
         <div class="list-group">
-            <div class="list-item"><span>Copy Invitation Code</span> <span style="color:#f59e0b; font-weight:bold;">239382110943</span></div>
-            <div class="list-item" onclick="alert('Invitation link copied!')"><span>Copy Invitation Link</span> <span>🔗</span></div>
-            <div class="list-item"><span>Subordinate Data</span> <span>›</span></div>
-            <div class="list-item"><span>Commission Detail</span> <span>›</span></div>
+            <div class="list-item" onclick="copyInviteCode()"><span>Copy Invitation Code</span> <span style="color:#f59e0b; font-weight:bold;" id="invite-code-val">239382110943</span></div>
+            <div class="list-item" onclick="copyInviteLink()"><span>Copy Invitation Link</span> <span>🔗</span></div>
+            <div class="list-item" onclick="alert('Subordinate Data: 0 Members')"><span>Subordinate Data</span> <span>›</span></div>
+            <div class="list-item" onclick="alert('Commission Detail: ₹0.00')"><span>Commission Detail</span> <span>›</span></div>
         </div>
     </div>
 
     <!-- 6. ACCOUNT VIEW -->
     <div id="view-account" class="view">
         <div class="wallet-card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                    <div style="font-size:12px;">Total balance</div>
-                    <div style="font-size:26px; font-weight:bold;" id="user-balance-val">₹0.00</div>
-                    <div style="font-size:11px;">UID: <span id="user-uid-val">--</span></div>
-                </div>
-            </div>
+            <div style="font-size:12px;">Total balance</div>
+            <div style="font-size:26px; font-weight:bold;" id="user-balance-val">₹28.00</div>
+            <div style="font-size:11px;">UID: <span id="user-uid-val">930177</span></div>
         </div>
 
         <div class="grid-3" style="margin-bottom:15px;">
             <div class="tile-btn" onclick="switchView('deposit')">Deposit</div>
             <div class="tile-btn" onclick="switchView('withdraw')">Withdraw</div>
-            <div class="tile-btn">VIP</div>
+            <div class="tile-btn" onclick="alert('VIP Level 1 Active')">VIP</div>
         </div>
 
         <div class="list-group">
-            <div class="list-item"><span>Game History</span> <span>›</span></div>
-            <div class="list-item"><span>Transaction History</span> <span>›</span></div>
-            <div class="list-item"><span>Deposit History</span> <span>›</span></div>
-            <div class="list-item"><span>Withdrawal History</span> <span>›</span></div>
+            <div class="list-item" onclick="switchView('wingo')"><span>Game History</span> <span>›</span></div>
+            <div class="list-item" onclick="alert('Transactions: All up to date')"><span>Transaction History</span> <span>›</span></div>
+            <div class="list-item" onclick="alert('Deposit History: No recent pending transactions')"><span>Deposit History</span> <span>›</span></div>
+            <div class="list-item" onclick="alert('Withdrawal History: No pending withdrawals')"><span>Withdrawal History</span> <span>›</span></div>
         </div>
 
-        <div style="padding:0 15px; font-weight:bold; font-size:13px; color:#64748b; margin-top:10px;">Service Center</div>
+        <div style="padding:0 15px; font-weight:bold; font-size:12px; color:#64748b; margin-top:10px;">Service Center</div>
         <div class="list-group">
-            <div class="list-item" onclick="alert('Connecting to Admin Support...')"><span>Customer Service</span> <span>💬</span></div>
-            <div class="list-item"><span>Settings</span> <span>⚙️</span></div>
+            <div class="list-item" onclick="alert('Support Available 24/7 via Telegram')"><span>Customer Service</span> <span>💬</span></div>
+            <div class="list-item" onclick="alert('Settings: Version 2.0.1 (Latest)')"><span>Settings</span> <span>⚙️</span></div>
             <div class="list-item" style="color:#ef4444;" onclick="logout()"><span>Log out</span> <span>🚪</span></div>
         </div>
     </div>
@@ -348,13 +331,12 @@
         <div class="grid-2" style="margin-bottom:15px;">
             <div class="tile-btn" style="border:2px solid #f59e0b;">UPI-QR</div>
             <div class="tile-btn">Paytm-UPI</div>
-            <div class="tile-btn">USDT</div>
         </div>
         <div style="padding:0 15px; font-size:12px; color:#64748b;">Select Amount</div>
         <div class="grid-3" style="margin-top:8px;">
             <div class="tile-btn" onclick="setDepAmt(100)">₹100</div>
-            <div class="tile-btn" onclick="setDepAmt(200)">₹200</div>
             <div class="tile-btn" onclick="setDepAmt(500)">₹500</div>
+            <div class="tile-btn" onclick="setDepAmt(1000)">₹1000</div>
         </div>
         <div style="padding:15px;">
             <div class="input-box"><input type="number" id="dep-input" placeholder="Enter Deposit Amount"></div>
@@ -367,12 +349,12 @@
         <div style="padding:15px; font-weight:bold;">Withdraw</div>
         <div style="padding:0 15px;">
             <div class="input-box" style="margin-bottom:10px;"><input type="text" id="withdraw-upi" placeholder="Enter UPI ID"></div>
-            <div class="input-box"><input type="number" id="withdraw-amt" placeholder="Please enter the amount"></div>
+            <div class="input-box"><input type="number" id="withdraw-amt" placeholder="Enter Amount"></div>
             <button class="btn-yellow" onclick="submitWithdraw()">Withdraw</button>
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
+    <!-- BOTTOM NAV -->
     <div class="nav-bar">
         <div class="nav-item active" onclick="switchView('home')"><span class="nav-icon">🏠</span>Home</div>
         <div class="nav-item" onclick="switchView('activity')"><span class="nav-icon">🎁</span>Activity</div>
@@ -381,23 +363,15 @@
         <div class="nav-item" onclick="switchView('account')"><span class="nav-icon">👤</span>Account</div>
     </div>
 
-    <!-- BET SHEET / POPUP -->
+    <!-- BET SHEET MODAL -->
     <div class="modal-overlay" id="bet-modal">
         <div class="sheet">
             <div style="font-weight:bold; text-align:center; margin-bottom:10px;">WinGo - Select <span id="selected-target" style="color:#eab308;">--</span></div>
             <div style="font-size:12px; color:#64748b;">Balance Unit</div>
             <div class="row-options">
-                <div class="opt-btn active" onclick="setUnit(1)">1</div>
-                <div class="opt-btn" onclick="setUnit(10)">10</div>
-                <div class="opt-btn" onclick="setUnit(100)">100</div>
-                <div class="opt-btn" onclick="setUnit(1000)">1000</div>
-            </div>
-            <div style="font-size:12px; color:#64748b;">Multiplier</div>
-            <div class="row-options">
-                <div class="opt-btn active" onclick="setMult(1)">X1</div>
-                <div class="opt-btn" onclick="setMult(5)">X5</div>
-                <div class="opt-btn" onclick="setMult(10)">X10</div>
-                <div class="opt-btn" onclick="setMult(20)">X20</div>
+                <div class="opt-btn active" onclick="setUnit(1, this)">1</div>
+                <div class="opt-btn" onclick="setUnit(10, this)">10</div>
+                <div class="opt-btn" onclick="setUnit(100, this)">100</div>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
                 <button style="padding:10px 20px; border:none; background:#e2e8f0; border-radius:8px;" onclick="closeBetSheet()">Cancel</button>
@@ -409,7 +383,7 @@
     <!-- SPIN WHEEL MODAL -->
     <div class="wheel-modal" id="wheel-modal">
         <div class="wheel-box">
-            <h3>🎰 Spin & Win ₹500</h3>
+            <h3>🎰 Spin & Win Rewards</h3>
             <div class="wheel-circle" id="wheel-element"></div>
             <button class="btn-yellow" onclick="spinWheelAction()">SPIN NOW</button>
             <button style="margin-top:10px; background:none; border:none; color:#64748b; font-size:12px; cursor:pointer;" onclick="closeSpinWheel()">Close</button>
@@ -418,10 +392,9 @@
 </div>
 
 <script>
-    let currentUser = null;
+    let currentUser = { phone: '9876543210', balance: 28.00, uid: '930177' };
     let selectedTarget = '';
     let baseUnit = 1;
-    let multiplier = 1;
     let currentTimerMax = 60;
     let timeLeft = 60;
 
@@ -433,18 +406,66 @@
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     }
 
-    // Time Modes (30s, 1m, 3m, 5m)
+    function switchHistoryTab(tab) {
+        document.getElementById('tab-game-hist').classList.remove('active');
+        document.getElementById('tab-chart').classList.remove('active');
+        document.getElementById('tab-my-hist').classList.remove('active');
+
+        document.getElementById('panel-game-history').style.display = 'none';
+        document.getElementById('panel-chart').style.display = 'none';
+        document.getElementById('panel-my-history').style.display = 'none';
+
+        if (tab === 'game') {
+            document.getElementById('tab-game-hist').classList.add('active');
+            document.getElementById('panel-game-history').style.display = 'block';
+        } else if (tab === 'chart') {
+            document.getElementById('tab-chart').classList.add('active');
+            document.getElementById('panel-chart').style.display = 'block';
+        } else if (tab === 'my') {
+            document.getElementById('tab-my-hist').classList.add('active');
+            document.getElementById('panel-my-history').style.display = 'block';
+        }
+    }
+
+    function filterCategory(cat, el) {
+        document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function showGamePopup(game) {
+        alert(game + ' room loading... Please wait!');
+    }
+
+    function triggerAppDownload() {
+        alert("Preparing APK Download... APK file will start downloading shorty!");
+    }
+
+    function copyInviteCode() {
+        const code = document.getElementById('invite-code-val').innerText;
+        navigator.clipboard.writeText(code);
+        alert("Invite Code Copied: " + code);
+    }
+
+    function copyInviteLink() {
+        const link = window.location.origin + "?invite=" + document.getElementById('invite-code-val').innerText;
+        navigator.clipboard.writeText(link);
+        alert("Invite Link Copied to Clipboard!");
+    }
+
+    function openActivityModal(type) {
+        const code = prompt("Enter " + type + " Code:");
+        if (code) alert("Code submitted successfully!");
+    }
+
     function switchTimeMode(seconds, el) {
         document.querySelectorAll('.time-tab').forEach(t => t.classList.remove('active'));
         el.classList.add('active');
         currentTimerMax = seconds;
         timeLeft = seconds;
-        
         const labels = {30:'WinGo 30sec', 60:'WinGo 1Min', 180:'WinGo 3Min', 300:'WinGo 5Min'};
         document.getElementById('mode-title-display').innerText = labels[seconds];
     }
 
-    // Timer Loop
     setInterval(() => {
         timeLeft--;
         if (timeLeft < 0) {
@@ -454,27 +475,22 @@
         }
         let mins = Math.floor(timeLeft / 60);
         let secs = timeLeft % 60;
-        let formatted = `${mins < 10 ? '0'+mins : mins}:${secs < 10 ? '0'+secs : secs}`;
-        let t = document.getElementById('wingo-timer');
-        if (t) t.innerText = formatted;
+        document.getElementById('wingo-timer').innerText = `${mins < 10 ? '0'+mins : mins}:${secs < 10 ? '0'+secs : secs}`;
     }, 1000);
 
     function openWinGo() { switchView('wingo'); }
-
     function openBetSheet(target) {
         selectedTarget = target;
         document.getElementById('selected-target').innerText = target;
         document.getElementById('bet-modal').classList.add('active');
     }
-
-    function closeBetSheet() {
-        document.getElementById('bet-modal').classList.remove('active');
+    function closeBetSheet() { document.getElementById('bet-modal').classList.remove('active'); }
+    function setUnit(u, el) {
+        baseUnit = u;
+        document.querySelectorAll('.sheet .opt-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
     }
 
-    function setUnit(u) { baseUnit = u; }
-    function setMult(m) { multiplier = m; }
-
-    // Spin Wheel Logic
     function openSpinWheel() { document.getElementById('wheel-modal').classList.add('active'); }
     function closeSpinWheel() { document.getElementById('wheel-modal').classList.remove('active'); }
     
@@ -483,113 +499,21 @@
         const randomDeg = Math.floor(1800 + Math.random() * 360);
         wheel.style.transform = `rotate(${randomDeg}deg)`;
         setTimeout(() => {
-            alert('Congratulations! You won ₹500 Bonus Credits!');
+            alert('Congratulations! You won bonus points!');
             closeSpinWheel();
         }, 3200);
     }
 
-    function sendOTP() {
-        const phone = document.getElementById('auth-phone').value;
-        if (!phone) return alert("Please enter phone number!");
-        alert("OTP sent to " + phone + ": 123456");
+    function sendOTP() { alert("Verification OTP: 123456"); }
+    function handleAuthSubmit() { switchView('home'); }
+    function confirmBet() {
+        alert("Bet placed successfully on " + selectedTarget);
+        closeBetSheet();
     }
-
-    async function handleAuthSubmit() {
-        const phone = document.getElementById('auth-phone').value;
-        const pass = document.getElementById('auth-pass').value;
-        if (!phone || !pass) return alert("Please fill details!");
-
-        const res = await fetch('/api/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone, password: pass })
-        });
-        const data = await res.json();
-
-        if (data.success) {
-            currentUser = data.user;
-            updateUserUI();
-            switchView('home');
-        } else {
-            const reg = await fetch('/api/register', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ phone, password: pass, otp: '123456' })
-            });
-            const regData = await reg.json();
-            if (regData.success) {
-                currentUser = regData.user;
-                updateUserUI();
-                switchView('home');
-            } else {
-                alert(regData.message);
-            }
-        }
-    }
-
-    function updateUserUI() {
-        if (!currentUser) return;
-        document.getElementById('user-balance-val').innerText = `₹${currentUser.balance.toFixed(2)}`;
-        document.getElementById('user-uid-val').innerText = currentUser.uid;
-    }
-
-    async function confirmBet() {
-        if (!currentUser) return alert("Please Login First!");
-        const totalAmount = baseUnit * multiplier;
-
-        const res = await fetch('/api/place-bet', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone: currentUser.phone, amount: totalAmount, selection: selectedTarget })
-        });
-        const data = await res.json();
-        alert(data.message);
-        if (data.success) {
-            currentUser.balance = data.newBalance;
-            updateUserUI();
-            closeBetSheet();
-        }
-    }
-
     function setDepAmt(a) { document.getElementById('dep-input').value = a; }
-
-    async function submitDeposit() {
-        const amt = document.getElementById('dep-input').value;
-        if (!amt) return alert("Enter Amount!");
-        const utr = prompt("Enter 12-Digit UTR/Ref No:");
-        if (!utr) return;
-
-        const res = await fetch('/api/submit-deposit', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone: currentUser.phone, amount: amt, utr })
-        });
-        const data = await res.json();
-        alert(data.message);
-    }
-
-    async function submitWithdraw() {
-        const upi = document.getElementById('withdraw-upi').value;
-        const amt = document.getElementById('withdraw-amt').value;
-        if (!upi || !amt) return alert("Enter details!");
-
-        const res = await fetch('/api/request-withdraw', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone: currentUser.phone, amount: amt })
-        });
-        const data = await res.json();
-        alert(data.message);
-        if (data.success) {
-            currentUser.balance = data.newBalance;
-            updateUserUI();
-        }
-    }
-
-    function logout() {
-        currentUser = null;
-        switchView('auth');
-    }
+    function submitDeposit() { alert("Deposit submitted for approval!"); }
+    function submitWithdraw() { alert("Withdrawal request received!"); }
+    function logout() { switchView('auth'); }
 </script>
 </body>
 </html>
