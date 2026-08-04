@@ -3,252 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>51CLUB Style Game</title>
+    <title>51 CLUB - Gaming Platform</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #8fa0ac; color: #333; display: flex; justify-content: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 420px; background: #f6f7f9; min-height: 100vh; position: relative; padding-bottom: 65px; }
+        body { background-color: #475569; color: #1e293b; display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 420px; background: #f8fafc; min-height: 100vh; position: relative; padding-bottom: 70px; }
         
         /* Top Header */
-        .top-brand { background: #facc15; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 18px; color: #1e293b; }
-        .btn-download-app { background: #1e293b; color: #facc15; font-size: 11px; padding: 5px 12px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; }
+        .top-brand { background: #facc15; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 18px; color: #1e293b; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .btn-download-app { background: #0f172a; color: #facc15; font-size: 11px; padding: 6px 12px; border-radius: 20px; text-decoration: none; border: none; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+        .btn-download-app:active { transform: scale(0.95); }
 
-        .view { display: none; }
-        .view.active { display: block; }
+        /* Navigation System */
+        .view { display: none; opacity: 0; transition: opacity 0.3s ease; }
+        .view.active { display: block; opacity: 1; }
 
-        /* Navigation Bar */
+        /* Bottom Nav Bar */
         .nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 420px; height: 60px; background: #ffffff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #e2e8f0; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #64748b; cursor: pointer; flex: 1; }
-        .nav-item.active { color: #eab308; font-weight: bold; }
-        .nav-icon { font-size: 18px; margin-bottom: 2px; }
-        .center-spin { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -20px; font-weight: bold; font-size: 10px; text-align: center; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #64748b; text-decoration: none; cursor: pointer; flex: 1; }
+        .nav-item.active { color: #d97706; font-weight: bold; }
+        .nav-icon { font-size: 20px; margin-bottom: 2px; }
+        .center-spin { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -22px; font-weight: bold; font-size: 10px; text-align: center; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(245,158,11,0.4); cursor: pointer; }
 
-        /* Profile / Account Page UI (Matching Screenshot) */
-        .profile-header { background: #facc15; padding: 20px 15px 40px 15px; border-radius: 0 0 20px 20px; position: relative; }
+        /* 51 Club Profile Header */
+        .profile-card { background: linear-gradient(135deg, #facc15, #eab308); padding: 20px 15px 35px 15px; border-radius: 0 0 24px 24px; color: #1e293b; position: relative; }
         .user-info { display: flex; align-items: center; gap: 12px; }
-        .avatar { width: 55px; height: 55px; border-radius: 50%; background: #fff; border: 2px solid #fff; }
-        .u-details { color: #1e293b; }
-        .u-id { font-size: 12px; opacity: 0.8; }
-        .vip-badge { background: #1e293b; color: #facc15; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-left: 5px; font-weight: bold; }
-        
-        .wallet-card-overlay { background: white; margin: -25px 15px 15px 15px; border-radius: 12px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; }
-        .action-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; margin-top: 15px; }
-        .action-icon-box { display: flex; flex-direction: column; align-items: center; font-size: 11px; font-weight: bold; color: #475569; cursor: pointer; }
-        .icon-circle { width: 40px; height: 40px; border-radius: 12px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 5px; }
+        .avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #fff; background: #cbd5e1; }
+        .vip-tag { background: #0f172a; color: #facc15; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: bold; margin-left: 5px; }
+        .balance-box { background: white; margin: -20px 15px 15px 15px; border-radius: 16px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center; }
 
-        .menu-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; margin-bottom: 15px; }
-        .menu-card { background: white; border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); cursor: pointer; }
-        .menu-title { font-size: 12px; font-weight: bold; color: #1e293b; }
-        .menu-sub { font-size: 10px; color: #94a3b8; }
+        /* Quick Action Buttons (Deposit / Withdraw) */
+        .action-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 15px; margin-bottom: 15px; }
+        .action-item { background: white; padding: 12px 5px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: bold; color: #334155; box-shadow: 0 2px 5px rgba(0,0,0,0.03); cursor: pointer; transition: transform 0.1s; }
+        .action-item:active { transform: scale(0.95); }
+        .action-icon { font-size: 22px; margin-bottom: 4px; }
 
-        /* 51CLUB Style Deposit Page */
-        .pay-header-banner { background: #facc15; padding: 15px; color: #78350f; font-weight: bold; border-radius: 12px; margin: 15px; }
-        .pay-methods { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 0 15px; margin-bottom: 15px; }
-        .pay-chip { background: white; border-radius: 8px; padding: 10px 5px; text-align: center; font-size: 11px; font-weight: bold; border: 2px solid transparent; cursor: pointer; }
-        .pay-chip.active { border-color: #facc15; background: #fffde7; }
+        /* Feature Cards Grid */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; margin-bottom: 15px; }
+        .menu-card { background: white; border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); cursor: pointer; }
+        .menu-card-icon { width: 36px; height: 36px; border-radius: 8px; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 18px; }
 
-        .qr-card-box { background: white; margin: 15px; border-radius: 12px; padding: 15px; text-align: center; }
-        .utr-box { background: #fff0f2; border: 1px dashed #ef4444; border-radius: 8px; padding: 10px; margin-top: 10px; }
-        .utr-input { width: 100%; border: 1px solid #cbd5e1; padding: 8px; border-radius: 6px; outline: none; margin-top: 5px; }
+        /* Deposit Page Style (51 Club Payment Gateway) */
+        .pay-option { background: white; padding: 12px; border-radius: 10px; border: 2px solid #e2e8f0; text-align: center; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .pay-option.active { border-color: #facc15; background: #fffbeb; }
+        .amount-chip { background: white; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; text-align: center; font-weight: bold; font-size: 13px; cursor: pointer; }
+        .amount-chip.active { background: #facc15; border-color: #d97706; }
 
-        /* Game Grid & RTP Badges */
-        .game-card-rtp { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; position: relative; cursor: pointer; }
-        .rtp-badge { background: #facc15; color: #0f172a; font-size: 9px; font-weight: bold; padding: 2px 0; }
+        /* UTR Modal Overlay */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .utr-box { background: white; width: 90%; max-width: 360px; border-radius: 16px; padding: 20px; color: #1e293b; }
 
-        /* Rules Checklist */
-        .rules-card { background: white; margin: 15px; border-radius: 12px; padding: 12px; font-size: 11px; color: #64748b; line-height: 1.8; }
-        .rule-item { display: flex; align-items: center; gap: 6px; }
-        .rule-dot { color: #f59e0b; }
+        /* Game Cards Grid */
+        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 15px; margin-bottom: 15px; }
+        .game-card { background: white; border-radius: 12px; padding: 10px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05); cursor: pointer; position: relative; overflow: hidden; }
+        .game-card img { width: 100%; border-radius: 8px; aspect-ratio: 1; object-fit: cover; }
+        .rtp-tag { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: #facc15; font-size: 9px; padding: 2px 0; font-weight: bold; }
+
+        .list-group { background: white; margin: 0 15px 15px 15px; border-radius: 12px; overflow: hidden; }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-
     <!-- Header -->
     <div class="top-brand">
-        <span>51CLUB GAME</span>
-        <button class="btn-download-app" onclick="alert('Downloading Official 51CLUB APK...')">📲 Download App</button>
+        <span>51 CLUB</span>
+        <button class="btn-download-app" onclick="triggerAppDownload()">📲 Download App</button>
     </div>
 
-    <!-- 1. HOME VIEW -->
-    <div id="view-home" class="view active">
-        <div style="background:#fde047; padding:12px; text-align:center; font-weight:bold; font-size:13px; color:#78350f;">
-            📢 Welcome to Official 51CLUB Gaming Portal!
-        </div>
-
-        <div style="padding:15px; font-weight:bold; font-size:13px; color:#475569;">Popular Games</div>
-        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; padding:0 15px;">
-            <div class="game-card-rtp" onclick="switchView('wingo')">
-                <div style="font-size:30px; padding:10px;">🎰</div>
-                <div style="font-weight:bold; font-size:12px;">WinGo</div>
-                <div class="rtp-badge">RTP 98.20%</div>
-            </div>
-            <div class="game-card-rtp" onclick="alert('Aviator Room Loading...')">
-                <div style="font-size:30px; padding:10px;">🚀</div>
-                <div style="font-weight:bold; font-size:12px;">Aviator</div>
-                <div class="rtp-badge">RTP 96.45%</div>
-            </div>
-            <div class="game-card-rtp" onclick="alert('Cricket Game Loading...')">
-                <div style="font-size:30px; padding:10px;">🏏</div>
-                <div style="font-weight:bold; font-size:12px;">Cricket</div>
-                <div class="rtp-badge">RTP 96.98%</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. ACCOUNT / PROFILE VIEW (Matching Screenshot 1) -->
-    <div id="view-account" class="view">
-        <div class="profile-header">
+    <!-- 1. ACCOUNT VIEW (51 CLUB STYLE) -->
+    <div id="view-account" class="view active">
+        <div class="profile-card">
             <div class="user-info">
-                <div class="avatar"></div>
-                <div class="u-details">
-                    <div style="font-weight:bold; font-size:15px;">MEMBERNNGIY9UT <span class="vip-badge">VIP0</span></div>
-                    <div class="u-id">UID | 2110943</div>
-                    <div style="font-size:10px; opacity:0.7;">Last login: 2026-08-04 18:11:56</div>
+                <div class="avatar" style="background-image: url('https://via.placeholder.com/50'); background-size: cover;"></div>
+                <div>
+                    <div style="font-weight: bold; font-size: 15px; color: #0f172a;">MEMBER_930177 <span class="vip-tag">VIP 1</span></div>
+                    <div style="font-size: 11px; opacity: 0.8; margin-top: 2px;">UID | 2110943 📋</div>
+                    <div style="font-size: 10px; opacity: 0.7; margin-top: 2px;">Last login: 2026-08-04 18:11:56</div>
                 </div>
             </div>
         </div>
 
-        <div class="wallet-card-overlay">
-            <div style="font-size:11px; color:#64748b;">Total balance</div>
-            <div style="font-size:24px; font-weight:bold; color:#0f172a;">₹0.96</div>
-            <div class="action-grid-4">
-                <div class="action-icon-box" onclick="switchView('deposit')">
-                    <div class="icon-circle">👛</div>
-                    <span>Deposit</span>
-                </div>
-                <div class="action-icon-box" onclick="switchView('withdraw')">
-                    <div class="icon-circle">🏦</div>
-                    <span>Withdraw</span>
-                </div>
-                <div class="action-icon-box" onclick="switchView('vip')">
-                    <div class="icon-circle">💎</div>
-                    <span>VIP</span>
-                </div>
-                <div class="action-icon-box" onclick="alert('ARWallet Sync Active')">
-                    <div class="icon-circle">💳</div>
-                    <span>ARWallet</span>
-                </div>
+        <div class="balance-box">
+            <div>
+                <div style="font-size: 11px; color: #64748b;">Total balance</div>
+                <div style="font-size: 22px; font-weight: bold; color: #0f172a;" id="account-balance-text">₹0.96 🔄</div>
+            </div>
+            <button style="background: #facc15; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer;" onclick="switchView('deposit')">Enter wallet</button>
+        </div>
+
+        <!-- 4 Quick Actions -->
+        <div class="action-grid">
+            <div class="action-item" onclick="switchView('deposit')">
+                <div class="action-icon">💳</div>
+                <div>Deposit</div>
+            </div>
+            <div class="action-item" onclick="switchView('withdraw')">
+                <div class="action-icon">🏧</div>
+                <div>Withdraw</div>
+            </div>
+            <div class="action-item" onclick="alert('VIP Center Active')">
+                <div class="action-icon">💎</div>
+                <div>VIP</div>
+            </div>
+            <div class="action-item" onclick="alert('Vault Locked')">
+                <div class="action-icon">🔐</div>
+                <div>Safe Box</div>
             </div>
         </div>
 
-        <div class="menu-grid-2">
+        <!-- Menu Cards Grid -->
+        <div class="menu-grid">
             <div class="menu-card" onclick="alert('Opening Game History')">
-                <span style="font-size:20px;">📘</span>
-                <div><div class="menu-title">Game History</div><div class="menu-sub">My game history</div></div>
+                <div class="menu-card-icon">📊</div>
+                <div>
+                    <div style="font-size: 12px; font-weight: bold;">Game History</div>
+                    <div style="font-size: 10px; color: #64748b;">My game history</div>
+                </div>
             </div>
-            <div class="menu-card" onclick="alert('Opening Transaction History')">
-                <span style="font-size:20px;">📗</span>
-                <div><div class="menu-title">Transaction</div><div class="menu-sub">My transaction history</div></div>
+            <div class="menu-card" onclick="alert('Opening Transactions')">
+                <div class="menu-card-icon">📝</div>
+                <div>
+                    <div style="font-size: 12px; font-weight: bold;">Transaction</div>
+                    <div style="font-size: 10px; color: #64748b;">My transaction history</div>
+                </div>
             </div>
             <div class="menu-card" onclick="alert('Opening Deposit History')">
-                <span style="font-size:20px;">📕</span>
-                <div><div class="menu-title">Deposit</div><div class="menu-sub">My deposit history</div></div>
-            </div>
-            <div class="menu-card" onclick="alert('Opening Withdraw History')">
-                <span style="font-size:20px;">📙</span>
-                <div><div class="menu-title">Withdraw</div><div class="menu-sub">My withdraw history</div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. DEPOSIT VIEW (Matching Screenshot 3 & 4) -->
-    <div id="view-deposit" class="view">
-        <div class="pay-header-banner">
-            <div>Balance</div>
-            <div style="font-size:22px;">₹0.96</div>
-        </div>
-
-        <div style="padding:0 15px; font-size:12px; font-weight:bold; margin-bottom:8px; color:#475569;">Select Payment Method</div>
-        <div class="pay-methods">
-            <div class="pay-chip active">UPI-QR</div>
-            <div class="pay-chip">Innate UPI</div>
-            <div class="pay-chip">PAYTM-UPI</div>
-            <div class="pay-chip">USDT</div>
-        </div>
-
-        <div class="qr-card-box">
-            <div style="font-size:12px; font-weight:bold; color:#ef4444; margin-bottom:10px;">ArUpiPay (Paytm / PhonePe)</div>
-            <div style="background:#f8fafc; border:1px solid #e2e8f0; display:inline-block; padding:10px; border-radius:12px;">
-                <div style="width:140px; height:140px; background:#cbd5e1; margin:0 auto; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#475569;">QR CODE SCAN</div>
-            </div>
-            
-            <div class="utr-box">
-                <div style="font-size:11px; font-weight:bold; color:#b91c1c;">Input UTR / Paste UTR</div>
-                <div style="font-size:10px; color:#ef4444;">If you do not back fill UTR/ paste UTR, 100% will fail.</div>
-                <input type="text" id="utr-input-field" class="utr-input" placeholder="Input 12 digits UTR here">
-            </div>
-
-            <button style="width:100%; padding:12px; background:#94a3b8; color:white; border:none; border-radius:20px; margin-top:15px; font-weight:bold;" onclick="submitUTR()">Submit (UTR Entry)</button>
-        </div>
-    </div>
-
-    <!-- 4. WITHDRAW VIEW (Matching Screenshot 5) -->
-    <div id="view-withdraw" class="view">
-        <div class="pay-header-banner">
-            <div>Available Balance</div>
-            <div style="font-size:22px;">₹0.96</div>
-        </div>
-
-        <div style="padding:0 15px; font-size:12px; font-weight:bold; margin-bottom:8px; color:#475569;">Withdrawal Channel</div>
-        <div class="pay-methods">
-            <div class="pay-chip active">UPI</div>
-            <div class="pay-chip">BANK CARD</div>
-            <div class="pay-chip">USDT</div>
-        </div>
-
-        <div style="padding:15px;">
-            <input type="number" style="width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:8px; outline:none; font-size:14px;" placeholder="Please enter the amount">
-            <button style="width:100%; padding:12px; background:#cbd5e1; color:#64748b; border:none; border-radius:20px; margin-top:15px; font-weight:bold;" onclick="alert('Withdrawal Request Placed!')">Withdraw</button>
-        </div>
-
-        <div class="rules-card">
-            <div class="rule-item"><span class="rule-dot">◆</span> Need to bet ₹0.00 to be able to withdraw</div>
-            <div class="rule-item"><span class="rule-dot">◆</span> Withdraw time 00:00-23:59</div>
-            <div class="rule-item"><span class="rule-dot">◆</span> Inday Remaining Withdrawal Times: 3</div>
-            <div class="rule-item"><span class="rule-dot">◆</span> Withdrawal amount range ₹100.00 - ₹50,000.00</div>
-        </div>
-    </div>
-
-    <!-- 5. VIP VIEW (Matching Screenshot 6 & 7) -->
-    <div id="view-vip" class="view">
-        <div style="padding:15px;">
-            <div style="background:linear-gradient(135deg, #94a3b8, #334155); color:white; padding:15px; border-radius:12px; margin-bottom:15px;">
-                <div style="font-weight:bold; font-size:16px;">VIP1 Level Benefits</div>
-                <div style="font-size:11px; margin-top:5px; opacity:0.8;">Upgrading VIP1 requires 35,743 EXP</div>
-                <div style="background:rgba(255,255,255,0.2); height:6px; border-radius:3px; margin-top:10px; overflow:hidden;">
-                    <div style="background:#facc15; width:25%; height:100%;"></div>
+                <div class="menu-card-icon">📥</div>
+                <div>
+                    <div style="font-size: 12px; font-weight: bold;">Deposit</div>
+                    <div style="font-size: 10px; color: #64748b;">My deposit history</div>
                 </div>
             </div>
+            <div class="menu-card" onclick="alert('Opening Withdrawal History')">
+                <div class="menu-card-icon">📤</div>
+                <div>
+                    <div style="font-size: 12px; font-weight: bold;">Withdraw</div>
+                    <div style="font-size: 10px; color: #64748b;">My withdraw history</div>
+                </div>
+            </div>
+        </div>
 
-            <div style="font-weight:bold; font-size:13px; margin-bottom:10px; color:#1e293b;">VIP1 Level Rewards</div>
-            <div style="background:white; border-radius:12px; padding:12px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <div><div style="font-weight:bold; font-size:12px;">Level up rewards</div><div style="font-size:10px; color:#94a3b8;">Each account can receive 1 time</div></div>
-                <button style="background:#facc15; border:none; padding:6px 14px; border-radius:12px; font-weight:bold; font-size:11px;">Claim 50</button>
+        <!-- Service List -->
+        <div class="list-group">
+            <div class="list-item" onclick="alert('Notifications Up to date')"><span>📩 Notification</span> <span>›</span></div>
+            <div class="list-item" onclick="alert('Enter Gift Code')"><span>🎁 Gifts</span> <span>›</span></div>
+            <div class="list-item" onclick="alert('Customer Service Available 24/7')"><span>🎧 Customer Service</span> <span>›</span></div>
+            <div class="list-item" style="color: #ef4444;" onclick="switchView('account')"><span>🚪 Log out</span> <span>›</span></div>
+        </div>
+    </div>
+
+    <!-- 2. HOME VIEW -->
+    <div id="view-home" class="view">
+        <div style="padding: 12px 15px; font-weight: bold; font-size: 14px; color: #475569;">Popular Games</div>
+        <div class="game-grid">
+            <div class="game-card" onclick="alert('Opening WinGo 1Min...')">
+                <div style="font-size: 32px; padding: 10px 0;">🎰</div>
+                <div style="font-size: 12px; font-weight: bold;">WinGo</div>
+                <div class="rtp-tag">RTP 98.45%</div>
+            </div>
+            <div class="game-card" onclick="alert('Opening Aviator...')">
+                <div style="font-size: 32px; padding: 10px 0;">🚀</div>
+                <div style="font-size: 12px; font-weight: bold;">Aviator</div>
+                <div class="rtp-tag">RTP 96.57%</div>
+            </div>
+            <div class="game-card" onclick="alert('Opening K3...')">
+                <div style="font-size: 32px; padding: 10px 0;">🎲</div>
+                <div style="font-size: 12px; font-weight: bold;">K3</div>
+                <div class="rtp-tag">RTP 97.12%</div>
             </div>
         </div>
     </div>
 
-    <!-- WINGO VIEW -->
-    <div id="view-wingo" class="view">
-        <div style="padding:15px; text-align:center;">
-            <h3>WinGo Color Trading Engine</h3>
-            <div style="background:#facc15; padding:20px; border-radius:12px; margin-top:15px; font-weight:bold; font-size:20px;">
-                Timer: 00:45
+    <!-- 3. DEPOSIT VIEW (51 CLUB RECHARGE PAGE) -->
+    <div id="view-deposit" class="view">
+        <div style="padding: 15px; font-weight: bold; font-size: 16px;">Deposit</div>
+        
+        <!-- Payment Channels -->
+        <div style="padding: 0 15px; font-size: 12px; font-weight: bold; color: #64748b; margin-bottom: 8px;">Select Channel</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 15px; margin-bottom: 15px;">
+            <div class="pay-option active">
+                <div>📱 UPI-QR</div>
+            </div>
+            <div class="pay-option">
+                <div>💙 Paytm</div>
+            </div>
+            <div class="pay-option">
+                <div>🪙 USDT</div>
+            </div>
+        </div>
+
+        <!-- Amount Presets -->
+        <div style="padding: 0 15px; font-size: 12px; font-weight: bold; color: #64748b; margin-bottom: 8px;">Deposit Amount</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 15px; margin-bottom: 15px;">
+            <div class="amount-chip active" onclick="selectDepAmount(100, this)">₹100</div>
+            <div class="amount-chip" onclick="selectDepAmount(300, this)">₹300</div>
+            <div class="amount-chip" onclick="selectDepAmount(500, this)">₹500</div>
+            <div class="amount-chip" onclick="selectDepAmount(1000, this)">₹1K</div>
+            <div class="amount-chip" onclick="selectDepAmount(2000, this)">₹2K</div>
+            <div class="amount-chip" onclick="selectDepAmount(5000, this)">₹5K</div>
+        </div>
+
+        <div style="padding: 0 15px;">
+            <input type="number" id="deposit-input-val" value="100" placeholder="₹100.00 - ₹50,000.00" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; margin-bottom: 15px;">
+            <button style="width: 100%; padding: 12px; background: #facc15; border: none; border-radius: 20px; font-weight: bold; font-size: 15px; color: #0f172a; cursor: pointer;" onclick="openPaymentGatewayModal()">Deposit Now</button>
+        </div>
+    </div>
+
+    <!-- 4. WITHDRAW VIEW -->
+    <div id="view-withdraw" class="view">
+        <div style="padding: 15px; font-weight: bold; font-size: 16px;">Withdraw</div>
+        <div style="padding: 0 15px;">
+            <div style="background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                <div style="font-size: 12px; color: #64748b;">Withdrawal Balance</div>
+                <div style="font-size: 22px; font-weight: bold;">₹0.96</div>
+            </div>
+            <input type="text" placeholder="Enter Bank Account / UPI ID" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 10px;">
+            <input type="number" placeholder="Enter Amount (₹100 - ₹50,000)" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px;">
+            <button style="width: 100%; padding: 12px; background: #e2e8f0; border: none; border-radius: 20px; font-weight: bold; color: #94a3b8; cursor: not-allowed;">Withdraw</button>
+        </div>
+    </div>
+
+    <!-- REALISTIC UTR DEPOSIT MODAL (51 GAME STYLE) -->
+    <div class="modal-overlay" id="utr-gateway-modal">
+        <div class="utr-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 18px; font-weight: bold;">ArUpiPay</span>
+                <span style="font-size: 12px; color: #ef4444; font-weight: bold;">⏰ 14:56</span>
+            </div>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <div style="font-size: 24px; font-weight: bold;" id="modal-pay-amount">₹100.00</div>
+                <div style="font-size: 11px; color: #64748b;">Scan QR Code to pay</div>
+            </div>
+            
+            <!-- QR Placeholder -->
+            <div style="background: #f1f5f9; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 15px;">
+                <div style="width: 140px; height: 140px; background: #000; margin: 0 auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">QR CODE API</div>
+                <div style="font-size: 10px; color: #64748b; margin-top: 8px;">Scan with Paytm / PhonePe / Google Pay</div>
+            </div>
+
+            <!-- UTR Input -->
+            <div style="font-size: 11px; font-weight: bold; margin-bottom: 4px;">Input UTR / Ref No.</div>
+            <input type="text" id="utr-number-input" placeholder="Enter 12 digits UTR Number" maxlength="12" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; margin-bottom: 8px;">
+            <div style="font-size: 10px; color: #ef4444; margin-bottom: 12px;">* If you do not enter UTR, system will fail to credit balance.</div>
+
+            <div style="display: flex; gap: 8px;">
+                <button style="flex: 1; padding: 10px; background: #f1f5f9; border: none; border-radius: 8px; font-weight: bold;" onclick="closePaymentGatewayModal()">Cancel</button>
+                <button style="flex: 1; padding: 10px; background: #facc15; border: none; border-radius: 8px; font-weight: bold;" onclick="submitUTRVerification()">Submit UTR</button>
             </div>
         </div>
     </div>
 
-    <!-- BOTTOM NAV BAR -->
+    <!-- Bottom Nav Bar -->
     <div class="nav-bar">
-        <div class="nav-item active" onclick="switchView('home')"><span class="nav-icon">🏠</span>Home</div>
-        <div class="nav-item" onclick="alert('Activity Center')"><span class="nav-icon">🎁</span>Activity</div>
+        <div class="nav-item" onclick="switchView('home')"><span class="nav-icon">🏠</span>Home</div>
+        <div class="nav-item" onclick="alert('Activity Bonus Center')"><span class="nav-icon">🎁</span>Activity</div>
         <div class="center-spin" onclick="alert('Spin Wheel Active')">Get<br>₹500</div>
         <div class="nav-item" onclick="alert('Promotion Center')"><span class="nav-icon">📢</span>Promotion</div>
-        <div class="nav-item" onclick="switchView('account')"><span class="nav-icon">👤</span>Account</div>
+        <div class="nav-item active" onclick="switchView('account')"><span class="nav-icon">👤</span>Account</div>
     </div>
-
 </div>
 
 <script>
@@ -256,17 +271,43 @@
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         const target = document.getElementById('view-' + viewName);
         if (target) target.classList.add('active');
+
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     }
 
-    function submitUTR() {
-        const utr = document.getElementById('utr-input-field').value;
-        if(utr.length === 12) {
-            alert("UTR " + utr + " submitted successfully! Status: Pending Verification.");
-        } else {
-            alert("Please enter valid 12-digit UTR Number!");
+    function selectDepAmount(amt, el) {
+        document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        document.getElementById('deposit-input-val').value = amt;
+    }
+
+    function openPaymentGatewayModal() {
+        const amt = document.getElementById('deposit-input-val').value;
+        if (!amt || amt < 100) {
+            alert('Minimum deposit amount is ₹100');
+            return;
         }
+        document.getElementById('modal-pay-amount').innerText = '₹' + parseFloat(amt).toFixed(2);
+        document.getElementById('utr-gateway-modal').classList.add('active');
+    }
+
+    function closePaymentGatewayModal() {
+        document.getElementById('utr-gateway-modal').classList.remove('active');
+    }
+
+    function submitUTRVerification() {
+        const utr = document.getElementById('utr-number-input').value;
+        if (!utr || utr.length !== 12) {
+            alert('Please enter a valid 12-digit Bank UTR / Reference Number');
+            return;
+        }
+        alert('UTR Verification Request Sent! Real server connection required to process bank clearance.');
+        closePaymentGatewayModal();
+    }
+
+    function triggerAppDownload() {
+        alert('Preparing APK Download...');
     }
 </script>
-
 </body>
 </html>
