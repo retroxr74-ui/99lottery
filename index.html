@@ -3,274 +3,460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>99Lottery - WinGo</title>
+    <title>99LOTTERY</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f172a; color: white; display: flex; justify-content: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 480px; background: #1e293b; padding: 15px; min-height: 100vh; }
-        .header { text-align: center; font-size: 24px; font-weight: bold; color: #38bdf8; margin-bottom: 15px; }
-        .card { background: #334155; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-        .balance-title { font-size: 13px; color: #94a3b8; }
-        .balance-amount { font-size: 30px; font-weight: bold; color: #4ade80; margin: 5px 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #7f8c8d; color: #333; display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 420px; background: #f5f5f5; min-height: 100vh; position: relative; padding-bottom: 65px; }
         
-        /* Auth */
-        .auth-box { display: flex; flex-direction: column; gap: 10px; }
-        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 14px; }
-        button { width: 100%; padding: 12px; border: none; border-radius: 8px; background: #38bdf8; color: black; font-weight: bold; cursor: pointer; }
+        /* Top Header */
+        .top-brand { background: #facc15; padding: 12px 15px; text-align: center; font-weight: bold; font-size: 20px; color: #1e293b; letter-spacing: 1px; }
 
-        /* Actions */
-        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .btn-deposit { background: #f59e0b; color: white; }
-        .btn-withdraw { background: #ec4899; color: white; }
+        /* Views management */
+        .view { display: none; }
+        .view.active { display: block; }
 
-        /* Timer Box */
-        .timer-box { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 12px; border-radius: 8px; margin-bottom: 15px; }
-        .timer-clock { font-size: 24px; font-weight: bold; color: #ef4444; letter-spacing: 2px; }
+        /* Bottom Nav */
+        .nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 420px; height: 60px; background: #ffffff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #e2e8f0; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #64748b; text-decoration: none; cursor: pointer; }
+        .nav-item.active { color: #eab308; font-weight: bold; }
+        .nav-icon { font-size: 18px; margin-bottom: 2px; }
+        .center-spin { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -20px; font-weight: bold; font-size: 11px; text-align: center; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 
-        /* Betting Area */
-        .color-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .btn-green { background: #22c55e; color: white; }
-        .btn-violet { background: #a855f7; color: white; }
-        .btn-red { background: #ef4444; color: white; }
+        /* Register / Login Page */
+        .auth-card { background: white; padding: 20px; margin: 15px; border-radius: 12px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 12px; color: #64748b; margin-bottom: 4px; }
+        .input-box { display: flex; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; }
+        .input-box input { border: none; background: transparent; outline: none; width: 100%; font-size: 14px; margin-left: 8px; }
+        .btn-otp { background: #facc15; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap; }
+        .btn-yellow { width: 100%; padding: 12px; background: #facc15; border: none; border-radius: 20px; font-weight: bold; font-size: 15px; color: #1e293b; cursor: pointer; margin-top: 10px; }
 
-        .number-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 15px; }
-        .num-btn { background: #475569; color: white; padding: 10px 0; border-radius: 6px; font-weight: bold; font-size: 16px; text-align: center; }
+        /* Home Page */
+        .banner { background: linear-gradient(135deg, #fde047, #f59e0b); padding: 20px 15px; border-radius: 0 0 15px 15px; color: #78350f; font-weight: bold; }
+        .cat-tabs { display: flex; gap: 8px; overflow-x: auto; padding: 10px 15px; background: white; margin-bottom: 10px; }
+        .cat-chip { padding: 6px 14px; background: #f1f5f9; border-radius: 15px; font-size: 12px; font-weight: bold; white-space: nowrap; }
+        .cat-chip.active { background: #facc15; color: #0f172a; }
+        .game-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 15px; margin-bottom: 15px; }
+        .game-card { background: white; border-radius: 10px; padding: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; }
+        .game-title { font-size: 13px; font-weight: bold; margin-top: 5px; }
 
-        /* History Table */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; text-align: center; }
-        th, td { padding: 8px; border-bottom: 1px solid #475569; }
-        th { color: #94a3b8; }
-        .dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; }
-        .dot-green { background: #22c55e; }
-        .dot-red { background: #ef4444; }
-        .dot-violet { background: #a855f7; }
+        /* WinGo Game View */
+        .wingo-box { background: #0f172a; color: white; padding: 15px; margin: 15px; border-radius: 12px; }
+        .timer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .nums-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 12px 0; }
+        .num-ball { aspect-ratio: 1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; cursor: pointer; }
+        .ball-green { background: #22c55e; }
+        .ball-red { background: #ef4444; }
+        .ball-violet { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
 
-        .hidden { display: none !important; }
+        /* Bet Modal / Sheet */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: none; align-items: flex-end; }
+        .modal-overlay.active { display: flex; }
+        .sheet { background: white; width: 100%; max-width: 420px; border-radius: 16px 16px 0 0; padding: 15px; margin: 0 auto; color: #1e293b; }
+        .row-options { display: flex; gap: 8px; margin: 10px 0; }
+        .opt-btn { flex: 1; padding: 8px; background: #f1f5f9; border-radius: 6px; text-align: center; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .opt-btn.active { background: #3b82f6; color: white; }
+
+        /* Wallet / Deposit / Withdraw */
+        .wallet-card { background: #facc15; padding: 15px; margin: 15px; border-radius: 12px; color: #78350f; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 15px; }
+        .tile-btn { background: white; padding: 12px; border-radius: 8px; text-align: center; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        /* Account / Service Center */
+        .list-group { background: white; margin: 15px; border-radius: 12px; overflow: hidden; }
+        .list-item { display: flex; justify-content: space-between; padding: 12px 15px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+        .list-item:last-child { border-bottom: none; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <div class="header">99LOTTERY</div>
+    <div class="top-brand">99LOTTERY</div>
 
-    <!-- AUTH SECTION -->
-    <div id="auth-section" class="card">
-        <h3 id="auth-title" style="margin-bottom:12px;">Login</h3>
-        <div class="auth-box">
-            <input type="text" id="phone" placeholder="Mobile Number">
-            <input type="password" id="password" placeholder="Password">
-            <input type="text" id="otp" placeholder="Enter OTP (123456)" class="hidden">
-            <button id="send-otp-btn" class="hidden" onclick="sendOTP()">Get OTP</button>
-            <button id="submit-btn" onclick="handleAuth()">Login</button>
-            <p style="font-size: 12px; text-align: center; color: #94a3b8; cursor: pointer;" onclick="toggleAuth()">
-                <span id="toggle-text">Account nahi hai? Register karein</span>
-            </p>
+    <!-- 1. REGISTER / LOGIN VIEW -->
+    <div id="view-auth" class="view active">
+        <div class="auth-card">
+            <h3 style="margin-bottom: 15px; text-align: center;">Register / Login</h3>
+            <div class="form-group">
+                <label>Phone number</label>
+                <div class="input-box">
+                    <span>+91</span>
+                    <input type="text" id="auth-phone" placeholder="Please enter phone number">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Verification Code</label>
+                <div class="input-box">
+                    <input type="text" id="auth-otp" placeholder="Enter confirmation code">
+                    <button class="btn-otp" onclick="sendOTP()">Send</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Set password</label>
+                <div class="input-box"><input type="password" id="auth-pass" placeholder="Set password"></div>
+            </div>
+            <div class="form-group">
+                <label>Confirm password</label>
+                <div class="input-box"><input type="password" id="auth-pass-confirm" placeholder="Confirm password"></div>
+            </div>
+            <div class="form-group">
+                <label>Invite code</label>
+                <div class="input-box"><input type="text" id="auth-invite" value="42842106017"></div>
+            </div>
+            <button class="btn-yellow" onclick="handleAuthSubmit()">Register / Login</button>
         </div>
     </div>
 
-    <!-- GAME SECTION -->
-    <div id="game-section" class="card hidden">
-        <div class="balance-title">Available Balance</div>
-        <div class="balance-amount" id="user-balance">₹0.00</div>
-        <div style="font-size: 12px; color: #94a3b8;">UID: <span id="user-uid">--</span></div>
-
-        <div class="action-btns">
-            <button class="btn-deposit" onclick="showDeposit()">Deposit</button>
-            <button class="btn-withdraw" onclick="showWithdraw()">Withdraw</button>
+    <!-- 2. HOME VIEW -->
+    <div id="view-home" class="view">
+        <div class="banner">🎮 99LOTTERY Official Platform</div>
+        <div class="cat-tabs">
+            <div class="cat-chip active">All</div>
+            <div class="cat-chip">Lottery</div>
+            <div class="cat-chip">Original</div>
+            <div class="cat-chip">Casino</div>
+            <div class="cat-chip">Slots</div>
         </div>
-
-        <hr style="margin: 15px 0; border-color: #475569;">
-
-        <!-- TIMER & PERIOD -->
-        <div class="timer-box">
-            <div>
-                <div style="font-size:11px; color:#94a3b8;">WinGo 1Min</div>
-                <div style="font-size:14px; font-weight:bold;" id="period-no">20260804001</div>
+        <div style="padding:0 15px; font-weight:bold; font-size:14px; margin-bottom:10px;">Lottery Games</div>
+        <div class="game-grid">
+            <div class="game-card" onclick="openWinGo()">
+                <div style="font-size:24px;">🎰</div>
+                <div class="game-title">WinGo 1Min</div>
             </div>
-            <div class="timer-clock" id="timer">00:60</div>
+            <div class="game-card" onclick="alert('K3 coming soon')">
+                <div style="font-size:24px;">🎲</div>
+                <div class="game-title">K3</div>
+            </div>
+            <div class="game-card" onclick="alert('5D coming soon')">
+                <div style="font-size:24px;">🔢</div>
+                <div class="game-title">5D</div>
+            </div>
         </div>
 
-        <!-- BET AMOUNT INPUT -->
-        <input type="number" id="bet-amount" placeholder="Bet Amount (Min ₹1)" value="10" style="margin-bottom:12px;">
+        <div style="padding:0 15px; font-weight:bold; font-size:14px; margin-bottom:10px;">Popular Games</div>
+        <div class="game-grid">
+            <div class="game-card"><div style="font-size:24px;">🚀</div><div class="game-title">Aviator</div></div>
+            <div class="game-card"><div style="font-size:24px;">🏏</div><div class="game-title">Cricket</div></div>
+            <div class="game-card"><div style="font-size:24px;">🎯</div><div class="game-title">Vortex</div></div>
+        </div>
+    </div>
 
-        <!-- COLOR BUTTONS -->
-        <div class="color-btns">
-            <button class="btn-green" onclick="placeBet('Green')">Green</button>
-            <button class="btn-violet" onclick="placeBet('Violet')">Violet</button>
-            <button class="btn-red" onclick="placeBet('Red')">Red</button>
+    <!-- 3. WINGO GAME VIEW -->
+    <div id="view-wingo" class="view">
+        <div class="wingo-box">
+            <div class="timer-header">
+                <div>
+                    <div style="font-size:11px; color:#94a3b8;">WinGo 1Min</div>
+                    <div style="font-size:13px; font-weight:bold;" id="wingo-period">20260804001</div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-size:11px; color:#94a3b8;">Time remaining</div>
+                    <div style="font-size:20px; font-weight:bold; color:#f87171;" id="wingo-timer">00:60</div>
+                </div>
+            </div>
+
+            <!-- Ball Numbers 0-9 -->
+            <div class="nums-grid">
+                <div class="num-ball ball-violet" onclick="openBetSheet('0')">0</div>
+                <div class="num-ball ball-green" onclick="openBetSheet('1')">1</div>
+                <div class="num-ball ball-red" onclick="openBetSheet('2')">2</div>
+                <div class="num-ball ball-green" onclick="openBetSheet('3')">3</div>
+                <div class="num-ball ball-red" onclick="openBetSheet('4')">4</div>
+                <div class="num-ball ball-violet" onclick="openBetSheet('5')">5</div>
+                <div class="num-ball ball-green" onclick="openBetSheet('6')">6</div>
+                <div class="num-ball ball-red" onclick="openBetSheet('7')">7</div>
+                <div class="num-ball ball-green" onclick="openBetSheet('8')">8</div>
+                <div class="num-ball ball-red" onclick="openBetSheet('9')">9</div>
+            </div>
+
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button style="flex:1; padding:10px; background:#22c55e; color:white; border:none; border-radius:6px; font-weight:bold;" onclick="openBetSheet('Big')">Big</button>
+                <button style="flex:1; padding:10px; background:#3b82f6; color:white; border:none; border-radius:6px; font-weight:bold;" onclick="openBetSheet('Small')">Small</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. ACTIVITY VIEW -->
+    <div id="view-activity" class="view">
+        <div style="padding:15px; font-weight:bold; font-size:16px;">Activity Center</div>
+        <div class="list-group">
+            <div class="list-item"><span>Gifts Code</span> <span>›</span></div>
+            <div class="list-item"><span>Attendance Bonus</span> <span>›</span></div>
+            <div class="list-item"><span>VIP Level Bonus</span> <span>›</span></div>
+        </div>
+    </div>
+
+    <!-- 5. PROMOTION / AGENCY VIEW -->
+    <div id="view-promotion" class="view">
+        <div class="wallet-card">
+            <div style="font-size:12px;">Yesterday's Total Commission</div>
+            <div style="font-size:24px; font-weight:bold;">₹0.00</div>
+        </div>
+        <div class="list-group">
+            <div class="list-item"><span>Copy Invitation Code</span> <span style="color:#f59e0b; font-weight:bold;">239382110943</span></div>
+            <div class="list-item" onclick="alert('Invitation link copied!')"><span>Copy Invitation Link</span> <span>🔗</span></div>
+            <div class="list-item"><span>Subordinate Data</span> <span>›</span></div>
+            <div class="list-item"><span>Commission Detail</span> <span>›</span></div>
+        </div>
+    </div>
+
+    <!-- 6. ACCOUNT / SERVICE CENTER VIEW -->
+    <div id="view-account" class="view">
+        <div class="wallet-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div style="font-size:12px;">Total balance</div>
+                    <div style="font-size:26px; font-weight:bold;" id="user-balance-val">₹0.00</div>
+                    <div style="font-size:11px;">UID: <span id="user-uid-val">--</span></div>
+                </div>
+            </div>
         </div>
 
-        <!-- NUMBER BUTTONS (0-9) -->
-        <div style="font-size: 12px; color: #94a3b8; margin-bottom: 8px;">Select Number:</div>
-        <div class="number-grid">
-            <button class="num-btn" style="color:#a855f7;" onclick="placeBet('0')">0</button>
-            <button class="num-btn" style="color:#22c55e;" onclick="placeBet('1')">1</button>
-            <button class="num-btn" style="color:#ef4444;" onclick="placeBet('2')">2</button>
-            <button class="num-btn" style="color:#22c55e;" onclick="placeBet('3')">3</button>
-            <button class="num-btn" style="color:#ef4444;" onclick="placeBet('4')">4</button>
-            <button class="num-btn" style="color:#a855f7;" onclick="placeBet('5')">5</button>
-            <button class="num-btn" style="color:#22c55e;" onclick="placeBet('6')">6</button>
-            <button class="num-btn" style="color:#ef4444;" onclick="placeBet('7')">7</button>
-            <button class="num-btn" style="color:#22c55e;" onclick="placeBet('8')">8</button>
-            <button class="num-btn" style="color:#ef4444;" onclick="placeBet('9')">9</button>
+        <div class="grid-3" style="margin-bottom:15px;">
+            <div class="tile-btn" onclick="switchView('deposit')">Deposit</div>
+            <div class="tile-btn" onclick="switchView('withdraw')">Withdraw</div>
+            <div class="tile-btn">VIP</div>
         </div>
 
-        <!-- GAME HISTORY -->
-        <h4 style="margin-top:15px; margin-bottom:8px;">Game History</h4>
-        <table>
-            <thead>
-                <tr>
-                    <th>Period</th>
-                    <th>Number</th>
-                    <th>Result</th>
-                </tr>
-            </thead>
-            <tbody id="history-body">
-                <tr><td>20260804000</td><td>5</td><td><span class="dot dot-violet"></span></td></tr>
-            </tbody>
-        </table>
+        <div class="list-group">
+            <div class="list-item"><span>Game History</span> <span>›</span></div>
+            <div class="list-item"><span>Transaction History</span> <span>›</span></div>
+            <div class="list-item"><span>Deposit History</span> <span>›</span></div>
+            <div class="list-item"><span>Withdrawal History</span> <span>›</span></div>
+        </div>
+
+        <div style="padding:0 15px; font-weight:bold; font-size:13px; color:#64748b; margin-top:10px;">Service Center</div>
+        <div class="list-group">
+            <div class="list-item" onclick="alert('Connecting to Admin Support...')"><span>Customer Service (Admin Chat)</span> <span>💬</span></div>
+            <div class="list-item"><span>Settings</span> <span>⚙️</span></div>
+            <div class="list-item"><span>Feedback</span> <span>📝</span></div>
+            <div class="list-item"><span>About Us</span> <span>ℹ️</span></div>
+            <div class="list-item" style="color:#ef4444;" onclick="logout()"><span>Log out</span> <span>🚪</span></div>
+        </div>
+    </div>
+
+    <!-- 7. DEPOSIT VIEW -->
+    <div id="view-deposit" class="view">
+        <div style="padding:15px; font-weight:bold;">Deposit</div>
+        <div class="grid-2" style="margin-bottom:15px;">
+            <div class="tile-btn" style="border:2px solid #f59e0b;">UPI-QR</div>
+            <div class="tile-btn">Paytm-UPI</div>
+            <div class="tile-btn">USDT</div>
+            <div class="tile-btn">ARPay</div>
+        </div>
+        <div style="padding:0 15px; font-size:12px; color:#64748b;">Select Amount</div>
+        <div class="grid-3" style="margin-top:8px;">
+            <div class="tile-btn" onclick="setDepAmt(100)">₹100</div>
+            <div class="tile-btn" onclick="setDepAmt(200)">₹200</div>
+            <div class="tile-btn" onclick="setDepAmt(500)">₹500</div>
+            <div class="tile-btn" onclick="setDepAmt(1000)">₹1K</div>
+            <div class="tile-btn" onclick="setDepAmt(2000)">₹2K</div>
+            <div class="tile-btn" onclick="setDepAmt(5000)">₹5K</div>
+        </div>
+        <div style="padding:15px;">
+            <div class="input-box"><input type="number" id="dep-input" placeholder="Enter Deposit Amount"></div>
+            <button class="btn-yellow" onclick="submitDeposit()">Deposit Now</button>
+        </div>
+    </div>
+
+    <!-- 8. WITHDRAW VIEW -->
+    <div id="view-withdraw" class="view">
+        <div style="padding:15px; font-weight:bold;">Withdraw</div>
+        <div class="grid-3" style="margin-bottom:15px;">
+            <div class="tile-btn" style="border:2px solid #f59e0b;">UPI</div>
+            <div class="tile-btn">Bank Card</div>
+            <div class="tile-btn">USDT</div>
+        </div>
+        <div style="padding:0 15px;">
+            <div class="input-box" style="margin-bottom:10px;"><input type="text" id="withdraw-upi" placeholder="Enter UPI ID"></div>
+            <div class="input-box"><input type="number" id="withdraw-amt" placeholder="Please enter the amount"></div>
+            <button class="btn-yellow" onclick="submitWithdraw()">Withdraw</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="switchView('home')"><span class="nav-icon">🏠</span>Home</div>
+        <div class="nav-item" onclick="switchView('activity')"><span class="nav-icon">🎁</span>Activity</div>
+        <div class="center-spin" onclick="alert('Spin Wheel Coming Soon!')">Get<br>₹500</div>
+        <div class="nav-item" onclick="switchView('promotion')"><span class="nav-icon">📢</span>Promotion</div>
+        <div class="nav-item" onclick="switchView('account')"><span class="nav-icon">👤</span>Account</div>
+    </div>
+
+    <!-- WINGO BET SHEET / POPUP -->
+    <div class="modal-overlay" id="bet-modal">
+        <div class="sheet">
+            <div style="font-weight:bold; text-align:center; margin-bottom:10px;">WinGo 30sec - Select <span id="selected-target">--</span></div>
+            <div style="font-size:12px; color:#64748b;">Balance Unit</div>
+            <div class="row-options">
+                <div class="opt-btn active" onclick="setUnit(1)">1</div>
+                <div class="opt-btn" onclick="setUnit(10)">10</div>
+                <div class="opt-btn" onclick="setUnit(100)">100</div>
+                <div class="opt-btn" onclick="setUnit(1000)">1000</div>
+            </div>
+            <div style="font-size:12px; color:#64748b;">Multiplier</div>
+            <div class="row-options">
+                <div class="opt-btn active" onclick="setMult(1)">X1</div>
+                <div class="opt-btn" onclick="setMult(5)">X5</div>
+                <div class="opt-btn" onclick="setMult(10)">X10</div>
+                <div class="opt-btn" onclick="setMult(20)">X20</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
+                <button style="padding:10px 20px; border:none; background:#e2e8f0; border-radius:8px;" onclick="closeBetSheet()">Cancel</button>
+                <button style="padding:10px 20px; border:none; background:#facc15; border-radius:8px; font-weight:bold;" onclick="confirmBet()">Confirm Bet</button>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    let isRegistering = false;
     let currentUser = null;
+    let selectedTarget = '';
+    let baseUnit = 1;
+    let multiplier = 1;
     let timeLeft = 60;
+
+    // View Switcher
+    function switchView(viewName) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        const target = document.getElementById('view-' + viewName);
+        if (target) target.classList.add('active');
+
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    }
 
     // Timer Logic
     setInterval(() => {
         timeLeft--;
         if (timeLeft < 0) {
             timeLeft = 60;
-            generateNewPeriod();
+            let p = document.getElementById('wingo-period');
+            if (p) p.innerText = parseInt(p.innerText) + 1;
         }
         let sec = timeLeft < 10 ? '0' + timeLeft : timeLeft;
-        document.getElementById('timer').innerText = `00:${sec}`;
+        let t = document.getElementById('wingo-timer');
+        if (t) t.innerText = `00:${sec}`;
     }, 1000);
 
-    function generateNewPeriod() {
-        const p = document.getElementById('period-no');
-        let currentP = parseInt(p.innerText);
-        p.innerText = currentP + 1;
+    function openWinGo() { switchView('wingo'); }
+
+    function sendOTP() {
+        const phone = document.getElementById('auth-phone').value;
+        if (!phone) return alert("Please enter phone number!");
+        alert("OTP sent to " + phone + ": 123456");
     }
 
-    function toggleAuth() {
-        isRegistering = !isRegistering;
-        document.getElementById('auth-title').innerText = isRegistering ? "Register" : "Login";
-        document.getElementById('toggle-text').innerText = isRegistering ? "Already registered? Login" : "Account nahi hai? Register karein";
-        document.getElementById('submit-btn').innerText = isRegistering ? "Register" : "Login";
-        
-        if (isRegistering) {
-            document.getElementById('otp').classList.remove('hidden');
-            document.getElementById('send-otp-btn').classList.remove('hidden');
-        } else {
-            document.getElementById('otp').classList.add('hidden');
-            document.getElementById('send-otp-btn').classList.add('hidden');
-        }
-    }
+    async function handleAuthSubmit() {
+        const phone = document.getElementById('auth-phone').value;
+        const pass = document.getElementById('auth-pass').value;
+        if (!phone || !pass) return alert("Please fill details!");
 
-    async function sendOTP() {
-        const phone = document.getElementById('phone').value;
-        const res = await fetch('/api/send-otp', {
+        const res = await fetch('/api/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone })
-        });
-        const data = await res.json();
-        alert(data.message || "OTP is: " + data.otp);
-    }
-
-    async function handleAuth() {
-        const phone = document.getElementById('phone').value;
-        const password = document.getElementById('password').value;
-        const otp = document.getElementById('otp').value;
-
-        const endpoint = isRegistering ? '/api/register' : '/api/login';
-        const body = isRegistering ? { phone, password, otp } : { phone, password };
-
-        const res = await fetch(endpoint, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(body)
+            body: JSON.stringify({ phone, password: pass })
         });
         const data = await res.json();
 
         if (data.success) {
             currentUser = data.user;
-            document.getElementById('auth-section').classList.add('hidden');
-            document.getElementById('game-section').classList.remove('hidden');
-            document.getElementById('user-balance').innerText = `₹${currentUser.balance.toFixed(2)}`;
-            document.getElementById('user-uid').innerText = currentUser.uid;
+            updateUserUI();
+            switchView('home');
         } else {
-            alert(data.message);
+            // Auto Register fallback
+            const reg = await fetch('/api/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ phone, password: pass, otp: '123456' })
+            });
+            const regData = await reg.json();
+            if (regData.success) {
+                currentUser = regData.user;
+                updateUserUI();
+                switchView('home');
+            } else {
+                alert(regData.message);
+            }
         }
     }
 
-    async function placeBet(selection) {
-        const amount = document.getElementById('bet-amount').value;
-        if (!currentUser) return alert("Pehle Login karein!");
+    function updateUserUI() {
+        if (!currentUser) return;
+        document.getElementById('user-balance-val').innerText = `₹${currentUser.balance.toFixed(2)}`;
+        document.getElementById('user-uid-val').innerText = currentUser.uid;
+    }
 
-        if (timeLeft <= 5) {
-            return alert("Is round ka time khatam! Agle round mein bet lagayein.");
-        }
+    function openBetSheet(target) {
+        selectedTarget = target;
+        document.getElementById('selected-target').innerText = target;
+        document.getElementById('bet-modal').classList.add('active');
+    }
+
+    function closeBetSheet() {
+        document.getElementById('bet-modal').classList.remove('active');
+    }
+
+    function setUnit(u) { baseUnit = u; }
+    function setMult(m) { multiplier = m; }
+
+    async function confirmBet() {
+        if (!currentUser) return alert("Please Login First!");
+        const totalAmount = baseUnit * multiplier;
 
         const res = await fetch('/api/place-bet', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone: currentUser.phone, amount, selection })
+            body: JSON.stringify({ phone: currentUser.phone, amount: totalAmount, selection: selectedTarget })
         });
         const data = await res.json();
-
+        alert(data.message);
         if (data.success) {
             currentUser.balance = data.newBalance;
-            document.getElementById('user-balance').innerText = `₹${currentUser.balance.toFixed(2)}`;
-            alert(data.message);
-        } else {
-            alert(data.message);
+            updateUserUI();
+            closeBetSheet();
         }
     }
 
-    async function showDeposit() {
-        const amount = prompt("Enter Deposit Amount (Min ₹100):");
-        if (!amount) return;
-        const utr = prompt("Send money to UPI: ravikumar9332@ybl & enter 12-Digit UTR/Ref No:");
+    function setDepAmt(a) { document.getElementById('dep-input').value = a; }
+
+    async function submitDeposit() {
+        const amt = document.getElementById('dep-input').value;
+        if (!amt) return alert("Enter Amount!");
+        const utr = prompt("Enter 12-Digit UTR/Ref No:");
         if (!utr) return;
 
         const res = await fetch('/api/submit-deposit', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone: currentUser.phone, amount, utr })
+            body: JSON.stringify({ phone: currentUser.phone, amount: amt, utr })
         });
         const data = await res.json();
         alert(data.message);
     }
 
-    async function showWithdraw() {
-        if (!currentUser.bankDetails) {
-            const upiId = prompt("Enter your UPI ID for Withdrawal:");
-            if (!upiId) return;
-            await fetch('/api/save-bank', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ phone: currentUser.phone, upiId })
-            });
-            currentUser.bankDetails = { upiId };
-        }
-
-        const amount = prompt("Enter Withdrawal Amount (Min ₹110):");
-        if (!amount) return;
+    async function submitWithdraw() {
+        const upi = document.getElementById('withdraw-upi').value;
+        const amt = document.getElementById('withdraw-amt').value;
+        if (!upi || !amt) return alert("Enter details!");
 
         const res = await fetch('/api/request-withdraw', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone: currentUser.phone, amount })
+            body: JSON.stringify({ phone: currentUser.phone, amount: amt })
         });
         const data = await res.json();
+        alert(data.message);
         if (data.success) {
             currentUser.balance = data.newBalance;
-            document.getElementById('user-balance').innerText = `₹${currentUser.balance.toFixed(2)}`;
+            updateUserUI();
         }
-        alert(data.message);
+    }
+
+    function logout() {
+        currentUser = null;
+        switchView('auth');
     }
 </script>
 </body>
