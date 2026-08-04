@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>99Lottery Admin Panel</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background-color: #f4f6f9; padding: 15px; color: #333; }
+        h1 { text-align: center; color: #d9534f; margin-bottom: 20px; font-size: 22px; }
+        .card { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card h2 { font-size: 16px; margin-bottom: 12px; border-bottom: 2px solid #eee; padding-bottom: 5px; color: #007bff; }
+        
+        /* Analytics Grid */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
+        .stat-box { background: #f8f9fa; padding: 10px; border-radius: 6px; text-align: center; border: 1px solid #ddd; }
+        .stat-box h3 { font-size: 12px; color: #666; }
+        .stat-box p { font-size: 18px; font-weight: bold; margin-top: 5px; }
+        .green-text { color: #28a745; }
+        .red-text { color: #dc3545; }
+        .purple-text { color: #6f42c1; }
+        .highlight { background: #fff3cd; border-color: #ffeeba; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #007bff; color: white; }
+        button { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-approve { background: #28a745; color: white; }
+        .btn-refresh { background: #17a2b8; color: white; width: 100%; margin-bottom: 15px; padding: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>99Lottery Admin Control Panel</h1>
+
+    <button class="btn-refresh" onclick="fetchAdminData()">🔄 Refresh Data</button>
+
+    <!-- LIVE BET ANALYTICS SECTION -->
+    <div class="card">
+        <h2>📊 Live Bet Analytics (Kis Par Jyada Bet Laga Hai)</h2>
+        <div class="grid">
+            <div class="stat-box">
+                <h3>🔴 Total Red Bet</h3>
+                <p class="red-text" id="total-red">₹0</p>
+            </div>
+            <div class="stat-box">
+                <h3>🟢 Total Green Bet</h3>
+                <p class="green-text" id="total-green">₹0</p>
+            </div>
+            <div class="stat-box">
+                <h3>🟣 Total Violet Bet</h3>
+                <p class="purple-text" id="total-violet">₹0</p>
+            </div>
+            <div class="stat-box highlight">
+                <h3>⚠️ Highest Bet On</h3>
+                <p id="highest-bet" style="color: #856404;">None</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PENDING DEPOSITS -->
+    <div class="card">
+        <h2>📥 Pending Deposit Requests</h2>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phone</th>
+                        <th>Amount</th>
+                        <th>UTR No.</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="deposit-list">
+                    <tr><td colspan="4">Loading deposits...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PENDING WITHDRAWALS -->
+    <div class="card">
+        <h2>📤 Pending Withdrawal Requests</h2>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phone</th>
+                        <th>Amount</th>
+                        <th>Bank/UPI Details</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="withdraw-list">
+                    <tr><td colspan="4">Loading withdrawals...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function fetchAdminData() {
+            try {
+                const res = await fetch('/api/admin/data');
+                const data = await res.json();
+
+                if (data.success) {
+                    renderAnalytics(data.bets || []);
+                    renderDeposits(data.deposits || []);
+                    renderWithdrawals(data.withdrawals || []);
+                }
+            } catch (err) {
+                console.error("Error fetching admin data:", err);
+            }
+        }
+
+        function renderAnalytics(bets) {
+            let red = 0, green = 0, violet = 0;
+
+            bets.forEach(b => {
+                const amt = parseFloat(b.amount) || 0;
+                if (b.selection === 'Red') red += amt;
+                else if (b.selection === 'Green') green += amt;
+                else if (b.selection === 'Violet') violet += amt;
+            });
+
+            document.getElementById('total-red').innerText = `₹${red}`;
+            document.getElementById('total-green').innerText = `₹${green}`;
+            document.getElementById('total-violet').innerText = `₹${violet}`;
+
+            let highest = "None";
+            let maxAmt = 0;
+            if (red > maxAmt) { maxAmt = red; highest = `Red (₹${red})`; }
+            if (green > maxAmt) { maxAmt = green; highest = `Green (₹${green})`; }
+            if (violet > maxAmt) { maxAmt = violet; highest = `Violet (₹${violet})`; }
+
+            document.getElementById('highest-bet').innerText = maxAmt > 0 ? highest : "No Active Bets";
+        }
+
+        function renderDeposits(deposits) {
+            const list = document.getElementById('deposit-list');
+            const pending = deposits.filter(d => d.status === 'Pending');
+            if (pending.length === 0) {
+                list.innerHTML = '<tr><td colspan="4">No pending deposits</td></tr>';
+                return;
+            }
+            list.innerHTML = pending.map(d => `
+                <tr>
+                    <td>${d.phone}</td>
+                    <td>₹${d.amount}</td>
+                    <td>${d.utr}</td>
+                    <td><button class="btn-approve" onclick="approveDeposit(${d.id})">Approve</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderWithdrawals(withdrawals) {
+            const list = document.getElementById('withdraw-list');
+            const pending = withdrawals.filter(w => w.status === 'Pending');
+            if (pending.length === 0) {
+                list.innerHTML = '<tr><td colspan="4">No pending withdrawals</td></tr>';
+                return;
+            }
+            list.innerHTML = pending.map(w => `
+                <tr>
+                    <td>${w.phone}</td>
+                    <td>₹${w.amount}</td>
+                    <td>UPI: ${w.details?.upiId || 'N/A'}<br>A/C: ${w.details?.accountNo || 'N/A'}</td>
+                    <td><button class="btn-approve" onclick="approveWithdraw(${w.id})">Approve</button></td>
+                </tr>
+            `).join('');
+        }
+
+        async function approveDeposit(depId) {
+            const res = await fetch('/api/admin/approve-deposit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ depId })
+            });
+            const data = await res.json();
+            alert(data.message);
+            fetchAdminData();
+        }
+
+        async function approveWithdraw(wdId) {
+            const res = await fetch('/api/admin/approve-withdraw', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ wdId })
+            });
+            const data = await res.json();
+            alert(data.message);
+            fetchAdminData();
+        }
+
+        fetchAdminData();
+        setInterval(fetchAdminData, 5000); // Auto refresh every 5 seconds
+    </script>
+</body>
+</html>
