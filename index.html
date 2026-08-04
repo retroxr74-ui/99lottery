@@ -2,337 +2,193 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Daman / 51 Club / BDG Game</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>99Lottery</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background: #f7f8ff; color: #333; max-width: 480px; margin: 0 auto; min-height: 100vh; padding-bottom: 75px; position: relative; }
-        
-        /* Auth Screen */
-        .auth-container { position: fixed; inset: 0; background: #fff; z-index: 2000; max-width: 480px; margin: 0 auto; display: block; overflow-y: auto; }
-        .auth-header { background: linear-gradient(135deg, #ff9900, #f6c000); padding: 35px 20px 25px; text-align: center; color: #fff; }
-        .auth-header h2 { font-size: 24px; font-weight: 800; }
-        .auth-tabs { display: flex; background: #fff; border-bottom: 2px solid #f0f0f0; }
-        .auth-tab { flex: 1; text-align: center; padding: 14px; font-weight: bold; color: #888; cursor: pointer; font-size: 15px; }
-        .auth-tab.active { color: #f6c000; border-bottom: 3px solid #f6c000; }
-        .auth-form { padding: 20px; }
-        
-        .input-group { margin-bottom: 16px; position: relative; }
-        .input-group label { font-size: 13px; color: #666; display: block; margin-bottom: 6px; font-weight: 600; }
-        .input-group input { width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; outline: none; font-size: 14px; background: #fafafa; }
-        .input-group input:focus { border-color: #f6c000; background: #fff; }
-        .btn-otp { position: absolute; right: 6px; top: 28px; background: #f6c000; color: #222; border: none; padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; }
-        
-        .btn-main { width: 100%; padding: 14px; background: linear-gradient(90deg, #f6c000, #ff9900); color: #fff; border: none; border-radius: 25px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 10px rgba(246,192,0,0.3); }
-
-        /* Top Header & Bottom Nav */
-        .app-header { background: #fff; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; font-weight: bold; position: sticky; top: 0; z-index: 100; }
-        .nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: #fff; display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid #eee; z-index: 100; }
-        .nav-item { text-align: center; color: #888; font-size: 11px; cursor: pointer; flex: 1; }
-        .nav-item i { font-size: 18px; display: block; margin-bottom: 3px; }
-        .nav-item.active { color: #f6c000; font-weight: bold; }
-
-        .page-section { display: none; padding: 12px; }
-        .page-section.active { display: block; }
-
-        /* Balance Card */
-        .balance-card { background: linear-gradient(135deg, #3a3a3a, #1a1a1a); border-radius: 12px; padding: 18px; color: #fff; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .balance-card .bal-amt { font-size: 26px; font-weight: bold; color: #f6c000; margin-top: 5px; }
-
-        /* Game Categories & Cards */
-        .game-cat-title { font-size: 15px; font-weight: bold; margin: 15px 0 10px; color: #444; border-left: 4px solid #f6c000; padding-left: 8px; }
-        .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .game-card { background: #fff; border-radius: 10px; padding: 16px; text-align: center; border: 1px solid #f0f0f0; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: 0.2s; }
-        .game-card:active { transform: scale(0.98); }
-        .game-card i { font-size: 32px; color: #f6c000; margin-bottom: 8px; }
-        .game-card h4 { font-size: 14px; color: #333; }
-
-        /* WinGo Arena */
-        .wingo-tabs { display: flex; background: #eef0f5; border-radius: 8px; padding: 3px; margin-bottom: 12px; }
-        .w-tab { flex: 1; text-align: center; padding: 8px; font-size: 12px; cursor: pointer; border-radius: 6px; font-weight: 600; color: #666; }
-        .w-tab.active { background: #fff; color: #222; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
-
-        .timer-card { background: linear-gradient(135deg, #2b2e4a, #1e2035); color: #fff; border-radius: 10px; padding: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .time-box { font-size: 22px; font-weight: bold; color: #f6c000; letter-spacing: 1px; }
-
-        .bet-buttons { display: flex; gap: 8px; margin-bottom: 12px; }
-        .btn-game { flex: 1; padding: 12px 5px; border: none; border-radius: 8px; color: #fff; font-weight: bold; font-size: 13px; cursor: pointer; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-        .bg-green { background: #40ad52; } .bg-violet { background: #b659fe; } .bg-red { background: #fb5b5b; }
-        .bg-big { background: #ffa800; } .bg-small { background: #6ea8fe; }
-
-        .number-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 12px; }
-        .num-btn { background: #fff; border: 1px solid #ddd; padding: 10px; text-align: center; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; }
-
-        /* Amount Selection Modal / Box */
-        .bet-amount-box { background: #fff; padding: 12px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 12px; }
-        .amount-chips { display: flex; gap: 6px; margin-top: 8px; }
-        .chip { flex: 1; text-align: center; padding: 6px; background: #f0f0f0; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; }
-        .chip.active { background: #f6c000; color: #fff; }
-
-        /* QR Deposit Container */
-        .qr-box { background: #fff; border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #eee; margin-bottom: 15px; }
-        .qr-img { width: 180px; height: 180px; margin: 12px auto; display: block; border: 2px solid #f6c000; border-radius: 8px; padding: 4px; }
-        .upi-tag { background: #fef8e7; border: 1px dashed #f6c000; padding: 8px; border-radius: 6px; color: #222; font-weight: bold; font-size: 13px; margin: 10px 0; display: inline-block; word-break: break-all; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background-color: #0f172a; color: white; display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 480px; background: #1e293b; padding: 15px; min-height: 100vh; }
+        .header { text-align: center; font-size: 24px; font-weight: bold; color: #38bdf8; margin-bottom: 15px; }
+        .card { background: #334155; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .balance-title { font-size: 14px; color: #94a3b8; }
+        .balance-amount { font-size: 28px; font-weight: bold; color: #4ade80; margin: 5px 0; }
+        .auth-box { display: flex; flex-direction: column; gap: 10px; }
+        input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #475569; background: #0f172a; color: white; }
+        button { width: 100%; padding: 12px; border: none; border-radius: 6px; background: #38bdf8; color: black; font-weight: bold; cursor: pointer; }
+        .bet-buttons { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-green { background: #22c55e; color: white; }
+        .btn-red { background: #ef4444; color: white; }
+        .btn-violet { background: #a855f7; color: white; }
+        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .btn-deposit { background: #eab308; color: black; }
+        .btn-withdraw { background: #ec4899; color: white; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <!-- Registration / Login Overlay -->
-    <div id="auth-screen" class="auth-container">
-        <div class="auth-header">
-            <h2>Daman / 51 Club</h2>
-            <p style="font-size:12px; opacity:0.9; margin-top:4px;">Official Gaming Platform</p>
-        </div>
-        <div class="auth-tabs">
-            <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Log In</div>
-            <div class="auth-tab" id="tab-reg" onclick="switchAuthTab('register')">Register</div>
-        </div>
+<div class="app-container">
+    <div class="header">99LOTTERY</div>
 
-        <!-- Login Form -->
-        <div id="login-form" class="auth-form">
-            <div class="input-group">
-                <label>Phone Number</label>
-                <input type="tel" id="l-phone" placeholder="Enter 10 digit phone number" maxlength="10">
-            </div>
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" id="l-pass" placeholder="Enter password">
-            </div>
-            <button class="btn-main" onclick="login()">Log In</button>
-        </div>
-
-        <!-- Register Form -->
-        <div id="register-form" class="auth-form" style="display:none;">
-            <div class="input-group">
-                <label>Phone Number</label>
-                <input type="tel" id="r-phone" placeholder="Enter 10 digit phone number" maxlength="10">
-                <button class="btn-otp" onclick="sendOTP()">Send OTP</button>
-            </div>
-            <div class="input-group">
-                <label>Verification Code (OTP)</label>
-                <input type="text" id="r-otp" placeholder="Enter OTP (Default: 123456)">
-            </div>
-            <div class="input-group">
-                <label>Set Password</label>
-                <input type="password" id="r-pass" placeholder="Set password (Min 6 chars)">
-            </div>
-            <button class="btn-main" onclick="register()">Register (Get ₹28 Bonus)</button>
+    <!-- AUTH SECTION -->
+    <div id="auth-section" class="card">
+        <h3 id="auth-title" style="margin-bottom:10px;">Login</h3>
+        <div class="auth-box">
+            <input type="text" id="phone" placeholder="Mobile Number">
+            <input type="password" id="password" placeholder="Password">
+            <input type="text" id="otp" placeholder="Enter OTP (123456)" class="hidden">
+            <button id="send-otp-btn" class="hidden" onclick="sendOTP()">Get OTP</button>
+            <button id="submit-btn" onclick="handleAuth()">Login</button>
+            <p style="font-size: 12px; text-align: center; color: #94a3b8; cursor: pointer;" onclick="toggleAuth()">
+                <span id="toggle-text">Account nahi hai? Register karein</span>
+            </p>
         </div>
     </div>
 
-    <!-- Main App Container -->
-    <div id="main-app">
+    <!-- MAIN GAME SECTION (AFTER LOGIN) -->
+    <div id="game-section" class="card hidden">
+        <div class="balance-title">Available Balance</div>
+        <div class="balance-amount" id="user-balance">₹0.00</div>
+        <div style="font-size: 12px; color: #94a3b8;">UID: <span id="user-uid">--</span></div>
+
+        <div class="action-btns">
+            <button class="btn-deposit" onclick="showDeposit()">Deposit</button>
+            <button class="btn-withdraw" onclick="showWithdraw()">Withdraw</button>
+        </div>
+
+        <hr style="margin: 15px 0; border-color: #475569;">
+
+        <h3>WinGo 1Min Game</h3>
+        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">Select Color to Place Bet:</p>
+
+        <input type="number" id="bet-amount" placeholder="Bet Amount (Min ₹1)" value="10">
+
+        <div class="bet-buttons">
+            <button class="btn-green" onclick="placeBet('Green')">Green</button>
+            <button class="btn-violet" onclick="placeBet('Violet')">Violet</button>
+            <button class="btn-red" onclick="placeBet('Red')">Red</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let isRegistering = false;
+    let currentUser = null;
+
+    function toggleAuth() {
+        isRegistering = !isRegistering;
+        document.getElementById('auth-title').innerText = isRegistering ? "Register" : "Login";
+        document.getElementById('toggle-text').innerText = isRegistering ? "Already registered? Login" : "Account nahi hai? Register karein";
+        document.getElementById('submit-btn').innerText = isRegistering ? "Register" : "Login";
         
-        <!-- HOME SECTION -->
-        <div id="sec-home" class="page-section active">
-            <div class="app-header">
-                <span>Daman Club</span>
-                <span style="font-size:12px; color:#666;">UID: <b id="u-uid" style="color:#222;">---</b></span>
-            </div>
+        if (isRegistering) {
+            document.getElementById('otp').classList.remove('hidden');
+            document.getElementById('send-otp-btn').classList.remove('hidden');
+        } else {
+            document.getElementById('otp').classList.add('hidden');
+            document.getElementById('send-otp-btn').classList.add('hidden');
+        }
+    }
 
-            <div class="balance-card">
-                <div style="font-size:12px; opacity:0.8;">Total Wallet Balance</div>
-                <div class="bal-amt">₹<span class="bal">0.00</span></div>
-            </div>
+    async function sendOTP() {
+        const phone = document.getElementById('phone').value;
+        const res = await fetch('/api/send-otp', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ phone })
+        });
+        const data = await res.json();
+        alert(data.message || "OTP is: " + data.otp);
+    }
 
-            <div class="game-cat-title">Lottery Games</div>
-            <div class="games-grid">
-                <div class="game-card" onclick="showSec('win')">
-                    <i class="fa-solid fa-trophy"></i>
-                    <h4>Win Go (30s/1m)</h4>
-                </div>
-                <div class="game-card" onclick="showSec('win')">
-                    <i class="fa-solid fa-dice"></i>
-                    <h4>K3 Lottery</h4>
-                </div>
-                <div class="game-card" onclick="showSec('win')">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <h4>5D Lottery</h4>
-                </div>
-                <div class="game-card" onclick="showSec('win')">
-                    <i class="fa-solid fa-coins"></i>
-                    <h4>TRX WinGo</h4>
-                </div>
-            </div>
+    async function handleAuth() {
+        const phone = document.getElementById('phone').value;
+        const password = document.getElementById('password').value;
+        const otp = document.getElementById('otp').value;
 
-            <div class="game-cat-title">Originals & Slots</div>
-            <div class="games-grid">
-                <div class="game-card" onclick="alert('Aviator Game loading...')">
-                    <i class="fa-solid fa-plane-departure" style="color:#e91e63;"></i>
-                    <h4>Aviator</h4>
-                </div>
-                <div class="game-card" onclick="alert('Mines Game loading...')">
-                    <i class="fa-solid fa-bomb" style="color:#ff5722;"></i>
-                    <h4>Mines</h4>
-                </div>
-                <div class="game-card" onclick="alert('Fishing Game loading...')">
-                    <i class="fa-solid fa-fish" style="color:#00bcd4;"></i>
-                    <h4>Fishing</h4>
-                </div>
-                <div class="game-card" onclick="alert('Slots loading...')">
-                    <i class="fa-solid fa-gamepad" style="color:#9c27b0;"></i>
-                    <h4>Slots</h4>
-                </div>
-            </div>
-        </div>
+        const endpoint = isRegistering ? '/api/register' : '/api/login';
+        const body = isRegistering ? { phone, password, otp } : { phone, password };
 
-        <!-- WIN GO GAME SECTION -->
-        <div id="sec-win" class="page-section">
-            <div class="app-header">
-                <span>Win Go</span>
-                <span>Balance: ₹<b class="bal" style="color:#f6c000;">0.00</b></span>
-            </div>
+        const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(body)
+        });
+        const data = await res.json();
 
-            <div class="wingo-tabs" style="margin-top:10px;">
-                <div class="w-tab active">Win Go 30s</div>
-                <div class="w-tab">Win Go 1Min</div>
-                <div class="w-tab">Win Go 3Min</div>
-                <div class="w-tab">Win Go 5Min</div>
-            </div>
+        if (data.success) {
+            currentUser = data.user;
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('game-section').classList.remove('hidden');
+            document.getElementById('user-balance').innerText = `₹${currentUser.balance.toFixed(2)}`;
+            document.getElementById('user-uid').innerText = currentUser.uid;
+        } else {
+            alert(data.message);
+        }
+    }
 
-            <div class="timer-card">
-                <div>
-                    <div style="font-size:11px; opacity:0.8;">Period Number</div>
-                    <div id="period-id" style="font-weight:bold; font-size:14px; margin-top:2px;">202608041001</div>
-                </div>
-                <div style="text-align:right;">
-                    <div style="font-size:11px; opacity:0.8;">Time Remaining</div>
-                    <div class="time-box" id="timer-display">00:30</div>
-                </div>
-            </div>
+    async function placeBet(selection) {
+        const amount = document.getElementById('bet-amount').value;
+        if (!currentUser) return alert("Pehle Login karein!");
 
-            <!-- Color Options -->
-            <div class="bet-buttons">
-                <button class="btn-game bg-green" onclick="selectBet('Green')">Green (x2)</button>
-                <button class="btn-game bg-violet" onclick="selectBet('Violet')">Violet (x4.5)</button>
-                <button class="btn-game bg-red" onclick="selectBet('Red')">Red (x2)</button>
-            </div>
+        const res = await fetch('/api/place-bet', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ phone: currentUser.phone, amount, selection })
+        });
+        const data = await res.json();
 
-            <!-- Number Options 0-9 -->
-            <div class="number-grid">
-                <div class="num-btn" style="color:#b659fe;" onclick="selectBet('0')">0</div>
-                <div class="num-btn" style="color:#40ad52;" onclick="selectBet('1')">1</div>
-                <div class="num-btn" style="color:#fb5b5b;" onclick="selectBet('2')">2</div>
-                <div class="num-btn" style="color:#40ad52;" onclick="selectBet('3')">3</div>
-                <div class="num-btn" style="color:#fb5b5b;" onclick="selectBet('4')">4</div>
-                <div class="num-btn" style="color:#b659fe;" onclick="selectBet('5')">5</div>
-                <div class="num-btn" style="color:#fb5b5b;" onclick="selectBet('6')">6</div>
-                <div class="num-btn" style="color:#40ad52;" onclick="selectBet('7')">7</div>
-                <div class="num-btn" style="color:#fb5b5b;" onclick="selectBet('8')">8</div>
-                <div class="num-btn" style="color:#40ad52;" onclick="selectBet('9')">9</div>
-            </div>
+        if (data.success) {
+            currentUser.balance = data.newBalance;
+            document.getElementById('user-balance').innerText = `₹${currentUser.balance.toFixed(2)}`;
+            alert(data.message);
+        } else {
+            alert(data.message);
+        }
+    }
 
-            <!-- Big/Small Options -->
-            <div class="bet-buttons">
-                <button class="btn-game bg-big" onclick="selectBet('Big')">Big (x2)</button>
-                <button class="btn-game bg-small" onclick="selectBet('Small')">Small (x2)</button>
-            </div>
+    async function showDeposit() {
+        const amount = prompt("Enter Deposit Amount (Min ₹100):");
+        if (!amount) return;
+        const utr = prompt("Send money to UPI: ravikumar9332@ybl & enter 12-Digit UTR/Ref No:");
+        if (!utr) return;
 
-            <!-- Amount Input (Min ₹1) -->
-            <div class="bet-amount-box">
-                <div style="font-size:12px; color:#666; font-weight:600;">Selected: <b id="sel-bet-type" style="color:#f6c000;">Green</b></div>
-                <div class="input-group" style="margin-top:8px; margin-bottom:5px;">
-                    <label>Bet Amount (Min ₹1)</label>
-                    <input type="number" id="bet-amt" value="1" min="1">
-                </div>
-                <div class="amount-chips">
-                    <div class="chip" onclick="setBetAmt(1)">₹1</div>
-                    <div class="chip" onclick="setBetAmt(10)">₹10</div>
-                    <div class="chip" onclick="setBetAmt(100)">₹100</div>
-                    <div class="chip" onclick="setBetAmt(500)">₹500</div>
-                </div>
-                <button class="btn-main" style="margin-top:10px; padding:10px;" onclick="placeBet()">Confirm Bet</button>
-            </div>
-        </div>
+        const res = await fetch('/api/submit-deposit', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ phone: currentUser.phone, amount, utr })
+        });
+        const data = await res.json();
+        alert(data.message);
+    }
 
-        <!-- DEPOSIT SECTION -->
-        <div id="sec-deposit" class="page-section">
-            <div class="app-header"><span>Deposit Funds</span></div>
-            
-            <div class="qr-box">
-                <h4 style="color:#333;">Scan Admin QR to Pay</h4>
-                <!-- Admin QR Dynamic Code -->
-                <img id="qr-code-img" class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=ravikumar9332@ybl&pn=Admin" alt="Admin QR">
-                
-                <div>Admin UPI ID:</div>
-                <div class="upi-tag">ravikumar9332@ybl</div>
-                <p style="font-size:11px; color:#888;">Scan QR via PhonePe / GooglePay / Paytm and submit 12-digit UTR below.</p>
-            </div>
+    async function showWithdraw() {
+        if (!currentUser.bankDetails) {
+            const upiId = prompt("Enter your UPI ID for Withdrawal:");
+            if (!upiId) return;
+            await fetch('/api/save-bank', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ phone: currentUser.phone, upiId })
+            });
+            currentUser.bankDetails = { upiId };
+        }
 
-            <div style="background:#fff; padding:15px; border-radius:10px; border:1px solid #eee;">
-                <div class="input-group">
-                    <label>Deposit Amount (Minimum ₹100)</label>
-                    <input type="number" id="dep-amt" value="100" min="100">
-                </div>
-                <div class="input-group">
-                    <label>12-Digit UTR / Reference No.</label>
-                    <input type="text" id="dep-utr" placeholder="e.g. 423156789012" maxlength="12">
-                </div>
-                <button class="btn-main" onclick="submitDeposit()">Submit Deposit</button>
-            </div>
-        </div>
+        const amount = prompt("Enter Withdrawal Amount (Min ₹110):");
+        if (!amount) return;
 
-        <!-- WITHDRAWAL SECTION -->
-        <div id="sec-withdraw" class="page-section">
-            <div class="app-header"><span>Withdraw Funds</span></div>
-
-            <!-- Saved UPI/Bank details section -->
-            <div style="background:#fff; padding:15px; border-radius:10px; border:1px solid #eee; margin-bottom:12px;">
-                <h4 style="font-size:14px; margin-bottom:10px; color:#222;">Bank / UPI Details (Permanent)</h4>
-                
-                <div id="bank-saved-status" style="display:none; background:#e8f5e9; color:#2e7d32; padding:10px; border-radius:6px; font-size:12px; margin-bottom:10px;">
-                    <i class="fa-solid fa-circle-check"></i> Details Saved & Bound Permanently.
-                </div>
-
-                <div class="input-group">
-                    <label>UPI ID (e.g. yourname@upi)</label>
-                    <input type="text" id="wb-upi" placeholder="Enter UPI ID">
-                </div>
-                <div class="input-group">
-                    <label>Account Number (Optional)</label>
-                    <input type="text" id="wb-acc" placeholder="Enter Bank Account Number">
-                </div>
-                <div class="input-group">
-                    <label>IFSC Code (Optional)</label>
-                    <input type="text" id="wb-ifsc" placeholder="Enter IFSC Code">
-                </div>
-                <button class="btn-main" id="btn-save-bank" style="background:#333; margin-top:0;" onclick="saveBankDetails()">Save Details Permanently</button>
-            </div>
-
-            <div style="background:#fff; padding:15px; border-radius:10px; border:1px solid #eee;">
-                <div class="input-group">
-                    <label>Withdrawal Amount (Minimum ₹110)</label>
-                    <input type="number" id="wd-amt" value="110" min="110">
-                </div>
-                <button class="btn-main" onclick="submitWithdrawal()">Confirm Withdrawal</button>
-            </div>
-        </div>
-
-        <!-- ACCOUNT SECTION -->
-        <div id="sec-account" class="page-section">
-            <div class="balance-card">
-                <div id="acc-phone-display" style="font-size:16px; font-weight:bold;">+91 ----------</div>
-                <div style="font-size:12px; opacity:0.8; margin-top:4px;">UID: <span id="acc-uid-display">---</span></div>
-                <div class="bal-amt" style="margin-top:10px;">₹<span class="bal">0.00</span></div>
-            </div>
-
-            <div style="background:#fff; border-radius:10px; border:1px solid #eee; overflow:hidden;">
-                <div style="padding:14px; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between; cursor:pointer;" onclick="showSec('deposit')">
-                    <span><i class="fa-solid fa-wallet" style="color:#f6c000; margin-right:8px;"></i> Deposit</span>
-                    <i class="fa-solid fa-chevron-right" style="color:#ccc;"></i>
-                </div>
-                <div style="padding:14px; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between; cursor:pointer;" onclick="showSec('withdraw')">
-                    <span><i class="fa-solid fa-money-bill-transfer" style="color:#43a047; margin-right:8px;"></i> Withdraw</span>
-                    <i class="fa-solid fa-chevron-right" style="color:#ccc;"></i>
-                </div>
-            </div>
-
-            <button class="btn-main" style="background:#ff4d4f; color:#fff; margin-top:20px;" onclick="location.reload()">Log Out</button>
-        </div>
-
-        <!-- Bottom Navigation -->
-        <div class="nav-bar">
-            <div class="nav-item active" onclick="showSec('home')"><i class="fa-solid fa-house"></i>Home</div>
-            <div class="nav-item" onclick="showSec('win')"><i class="fa-solid fa-trophy"></i>Win Go</div>
-            <div class="nav-item" onclick="sho
+        const res = await fetch('/api/request-withdraw', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ phone: currentUser.phone, amount })
+        });
+        const data = await res.json();
+        if (data.success) {
+            currentUser.balance = data.newBalance;
+            document.getElementById('user-balance').innerText = `₹${currentUser.balance.toFixed(2)}`;
+        }
+        alert(data.message);
+    }
+</script>
+</body>
+</html>
