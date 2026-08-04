@@ -45,18 +45,35 @@
         .game-card { background: white; border-radius: 12px; padding: 12px 10px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05); cursor: pointer; position: relative; }
         .rtp-tag { font-size: 10px; color: #d97706; font-weight: bold; margin-top: 5px; }
 
-        /* Modal Overlays (Replaces Browser Alerts) */
+        /* Modals */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: none; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
-        .modal-box { background: white; width: 92%; max-width: 380px; border-radius: 16px; padding: 20px; color: #1e293b; max-height: 85vh; overflow-y: auto; }
+        .modal-box { background: white; width: 92%; max-width: 380px; border-radius: 16px; padding: 15px; color: #1e293b; max-height: 90vh; overflow-y: auto; }
 
-        /* WinGo Game UI inside Modal */
-        .wingo-header { display: flex; justify-content: space-between; align-items: center; background: #1e293b; color: white; padding: 12px; border-radius: 10px; margin-bottom: 15px; }
-        .color-btn-group { display: flex; gap: 8px; margin-bottom: 15px; }
-        .c-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; color: white; cursor: pointer; }
+        /* WinGo Complete Dashboard UI */
+        .wingo-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #1e293b, #0f172a); color: white; padding: 12px; border-radius: 12px; margin-bottom: 12px; }
+        .timer-box { background: #000; padding: 6px 12px; border-radius: 8px; color: #facc15; font-weight: bold; font-size: 18px; letter-spacing: 1px; }
+
+        .color-btn-group { display: flex; gap: 8px; margin-bottom: 12px; }
+        .c-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; color: white; cursor: pointer; font-size: 13px; }
         .btn-green { background: #22c55e; }
         .btn-violet { background: #a855f7; }
         .btn-red { background: #ef4444; }
+
+        /* Numbers Grid */
+        .num-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 12px; }
+        .num-btn { padding: 8px 0; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: bold; text-align: center; cursor: pointer; background: #f8fafc; font-size: 13px; }
+
+        /* Big Small */
+        .bs-group { display: flex; gap: 8px; margin-bottom: 12px; }
+        .bs-btn { flex: 1; padding: 10px; border: none; border-radius: 20px; font-weight: bold; color: white; cursor: pointer; }
+        .btn-big { background: #eab308; }
+        .btn-small { background: #3b82f6; }
+
+        /* History Table */
+        .history-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
+        .history-table th, .history-table td { padding: 6px; text-align: center; border-bottom: 1px solid #f1f5f9; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 
         .list-group { background: white; margin: 0 15px 15px 15px; border-radius: 12px; overflow: hidden; }
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; cursor: pointer; }
@@ -65,7 +82,6 @@
 <body>
 
 <div class="app-container">
-    <!-- Header -->
     <div class="top-brand">
         <span>51 CLUB</span>
         <button class="btn-download-app" onclick="showPopupMessage('Downloading App APK...')">📲 Download App</button>
@@ -86,7 +102,7 @@
         <div class="balance-box">
             <div>
                 <div style="font-size: 11px; color: #64748b;">Total balance</div>
-                <div style="font-size: 22px; font-weight: bold; color: #0f172a;">₹0.96</div>
+                <div style="font-size: 22px; font-weight: bold; color: #0f172a;" id="user-wallet-bal">₹100.00</div>
             </div>
             <button style="background: #facc15; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer;" onclick="switchView('deposit')">Enter wallet</button>
         </div>
@@ -94,12 +110,12 @@
         <div class="action-grid">
             <div class="action-item" onclick="switchView('deposit')"><div style="font-size: 20px; margin-bottom: 4px;">💳</div>Deposit</div>
             <div class="action-item" onclick="switchView('withdraw')"><div style="font-size: 20px; margin-bottom: 4px;">🏧</div>Withdraw</div>
-            <div class="action-item" onclick="showPopupMessage('VIP Level 1 Active. Deposit ₹500 more for VIP 2.')"><div style="font-size: 20px; margin-bottom: 4px;">💎</div>VIP</div>
-            <div class="action-item" onclick="showPopupMessage('Safe Box is currently empty.')"><div style="font-size: 20px; margin-bottom: 4px;">🔐</div>Safe Box</div>
+            <div class="action-item" onclick="showPopupMessage('VIP Level 1 Active.')"><div style="font-size: 20px; margin-bottom: 4px;">💎</div>VIP</div>
+            <div class="action-item" onclick="showPopupMessage('Safe Box Empty.')"><div style="font-size: 20px; margin-bottom: 4px;">🔐</div>Safe Box</div>
         </div>
 
         <div class="menu-grid">
-            <div class="menu-card" onclick="showPopupMessage('No recent game history found.')">
+            <div class="menu-card" onclick="showPopupMessage('No game history found.')">
                 <div class="menu-card-icon">📊</div>
                 <div><div style="font-size: 12px; font-weight: bold;">Game History</div><div style="font-size: 10px; color: #64748b;">My records</div></div>
             </div>
@@ -110,14 +126,12 @@
         </div>
 
         <div class="list-group">
-            <div class="list-item" onclick="showPopupMessage('No new system notifications.')"><span>📩 Notification</span> <span>›</span></div>
-            <div class="list-item" onclick="showPopupMessage('Invalid or expired gift code.')"><span>🎁 Gifts</span> <span>›</span></div>
-            <div class="list-item" onclick="showPopupMessage('Connecting to 24/7 Live Support Agent...')"><span>🎧 Customer Service</span> <span>›</span></div>
-            <div class="list-item" style="color: #ef4444;" onclick="showPopupMessage('Logged out successfully.')"><span>🚪 Log out</span> <span>›</span></div>
+            <div class="list-item" onclick="showPopupMessage('System fully operational.')"><span>📩 Notification</span> <span>›</span></div>
+            <div class="list-item" onclick="showPopupMessage('Customer support available 24/7.')"><span>🎧 Customer Service</span> <span>›</span></div>
         </div>
     </div>
 
-    <!-- 2. HOME VIEW (Games) -->
+    <!-- 2. HOME VIEW -->
     <div id="view-home" class="view">
         <div style="padding: 12px 15px; font-weight: bold; font-size: 14px; color: #475569;">Lottery Games</div>
         <div class="game-grid">
@@ -126,12 +140,12 @@
                 <div style="font-size: 12px; font-weight: bold; margin-top: 4px;">WinGo 1Min</div>
                 <div class="rtp-tag">RTP 98.4%</div>
             </div>
-            <div class="game-card" onclick="showPopupMessage('Aviator crash game loading...')">
+            <div class="game-card" onclick="showPopupMessage('Aviator module loading...')">
                 <div style="font-size: 28px;">🚀</div>
                 <div style="font-size: 12px; font-weight: bold; margin-top: 4px;">Aviator</div>
                 <div class="rtp-tag">RTP 96.5%</div>
             </div>
-            <div class="game-card" onclick="showPopupMessage('K3 Dice game loading...')">
+            <div class="game-card" onclick="showPopupMessage('K3 Dice module loading...')">
                 <div style="font-size: 28px;">🎲</div>
                 <div style="font-size: 12px; font-weight: bold; margin-top: 4px;">K3 Lotato</div>
                 <div class="rtp-tag">RTP 97.1%</div>
@@ -158,33 +172,76 @@
         </div>
     </div>
 
-    <!-- CUSTOM POPUP MODAL (Replaces Browser Alerts) -->
+    <!-- POPUP MODAL -->
     <div class="modal-overlay" id="custom-msg-modal">
         <div class="modal-box" style="text-align: center;">
             <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Notification</div>
-            <div id="modal-msg-text" style="font-size: 14px; color: #475569; margin-bottom: 20px;">Message here</div>
+            <div id="modal-msg-text" style="font-size: 14px; color: #475569; margin-bottom: 20px;">Message</div>
             <button style="padding: 8px 24px; background: #facc15; border: none; border-radius: 20px; font-weight: bold; cursor: pointer;" onclick="closeMsgModal()">OK</button>
         </div>
     </div>
 
-    <!-- WINGO GAME MODAL -->
+    <!-- ADVANCED WINGO GAME MODAL -->
     <div class="modal-overlay" id="wingo-modal">
         <div class="modal-box">
             <div class="wingo-header">
-                <span>WinGo 1 Min</span>
-                <span id="wingo-timer" style="color: #facc15; font-weight: bold;">00:45</span>
+                <div>
+                    <div style="font-size: 13px; font-weight: bold;">WinGo 1 Min</div>
+                    <div style="font-size: 10px; color: #94a3b8;" id="period-id">Period: 202608041001</div>
+                </div>
+                <div class="timer-box" id="wingo-timer">00:45</div>
             </div>
-            <div style="font-size: 12px; color: #64748b; margin-bottom: 10px;">Select Color to Place Bet:</div>
+
+            <!-- Colors -->
             <div class="color-btn-group">
-                <button class="c-btn btn-green" onclick="placeBet('Green')">Green</button>
-                <button class="c-btn btn-violet" onclick="placeBet('Violet')">Violet</button>
-                <button class="c-btn btn-red" onclick="placeBet('Red')">Red</button>
+                <button class="c-btn btn-green" onclick="selectBetTarget('Green')">Green</button>
+                <button class="c-btn btn-violet" onclick="selectBetTarget('Violet')">Violet</button>
+                <button class="c-btn btn-red" onclick="selectBetTarget('Red')">Red</button>
             </div>
-            <button style="width: 100%; padding: 10px; background: #e2e8f0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" onclick="closeWinGoModal()">Close Game</button>
+
+            <!-- Number Grid -->
+            <div class="num-grid">
+                <div class="num-btn" style="color:#a855f7" onclick="selectBetTarget('0')">0</div>
+                <div class="num-btn" style="color:#22c55e" onclick="selectBetTarget('1')">1</div>
+                <div class="num-btn" style="color:#ef4444" onclick="selectBetTarget('2')">2</div>
+                <div class="num-btn" style="color:#22c55e" onclick="selectBetTarget('3')">3</div>
+                <div class="num-btn" style="color:#ef4444" onclick="selectBetTarget('4')">4</div>
+                <div class="num-btn" style="color:#a855f7" onclick="selectBetTarget('5')">5</div>
+                <div class="num-btn" style="color:#ef4444" onclick="selectBetTarget('6')">6</div>
+                <div class="num-btn" style="color:#22c55e" onclick="selectBetTarget('7')">7</div>
+                <div class="num-btn" style="color:#ef4444" onclick="selectBetTarget('8')">8</div>
+                <div class="num-btn" style="color:#22c55e" onclick="selectBetTarget('9')">9</div>
+            </div>
+
+            <!-- Big / Small -->
+            <div class="bs-group">
+                <button class="bs-btn btn-big" onclick="selectBetTarget('Big')">Big</button>
+                <button class="bs-btn btn-small" onclick="selectBetTarget('Small')">Small</button>
+            </div>
+
+            <!-- Parity History Header -->
+            <div style="font-size: 12px; font-weight: bold; margin-top: 10px;">Game History</div>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Number</th>
+                        <th>Big/Small</th>
+                        <th>Color</th>
+                    </tr>
+                </thead>
+                <tbody id="history-rows">
+                    <tr><td>...1000</td><td>7</td><td>Big</td><td><span class="dot" style="background:#22c55e"></span></td></tr>
+                    <tr><td>...0999</td><td>2</td><td>Small</td><td><span class="dot" style="background:#ef4444"></span></td></tr>
+                    <tr><td>...0998</td><td>0</td><td>Small</td><td><span class="dot" style="background:#a855f7"></span></td></tr>
+                </tbody>
+            </table>
+
+            <button style="width: 100%; padding: 10px; background: #f1f5f9; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 12px;" onclick="closeWinGoModal()">Close Game</button>
         </div>
     </div>
 
-    <!-- UTR DEPOSIT MODAL -->
+    <!-- UTR MODAL -->
     <div class="modal-overlay" id="utr-modal">
         <div class="modal-box">
             <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px;">Enter UTR Reference</div>
@@ -199,7 +256,7 @@
     <!-- Bottom Nav Bar -->
     <div class="nav-bar">
         <div class="nav-item" onclick="switchView('home')"><span class="nav-icon">🏠</span>Home</div>
-        <div class="nav-item" onclick="showPopupMessage('Activity bonus rewards unlocked!')"><span class="nav-icon">🎁</span>Activity</div>
+        <div class="nav-item" onclick="showPopupMessage('Activity bonus unlocked!')"><span class="nav-icon">🎁</span>Activity</div>
         <div class="center-spin" onclick="showPopupMessage('Spin wheel feature coming soon!')">Get<br>₹500</div>
         <div class="nav-item" onclick="showPopupMessage('Referral link copied!')"><span class="nav-icon">📢</span>Promotion</div>
         <div class="nav-item active" onclick="switchView('account')"><span class="nav-icon">👤</span>Account</div>
@@ -207,6 +264,9 @@
 </div>
 
 <script>
+    let timerInterval = null;
+    let timeLeft = 60;
+
     function switchView(viewName) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById('view-' + viewName).classList.add('active');
@@ -222,17 +282,46 @@
         document.getElementById('custom-msg-modal').classList.remove('active');
     }
 
+    /* WinGo Timer Engine */
     function openWinGoModal() {
         document.getElementById('wingo-modal').classList.add('active');
+        if(!timerInterval) {
+            timerInterval = setInterval(updateTimer, 1000);
+        }
     }
 
     function closeWinGoModal() {
         document.getElementById('wingo-modal').classList.remove('active');
     }
 
-    function placeBet(color) {
-        showPopupMessage('Successfully placed bet on ' + color + '!');
-        closeWinGoModal();
+    function updateTimer() {
+        timeLeft--;
+        if(timeLeft <= 0) {
+            timeLeft = 60;
+            // Generate simulated result on cycle complete
+            addSimulatedHistory();
+        }
+        let sec = timeLeft < 10 ? '0' + timeLeft : timeLeft;
+        document.getElementById('wingo-timer').innerText = '00:' + sec;
+    }
+
+    function selectBetTarget(target) {
+        if(timeLeft <= 5) {
+            showPopupMessage('Round freezing! Bets closed for this cycle.');
+            return;
+        }
+        showPopupMessage('Selected prediction: ' + target + '. Processing bet...');
+    }
+
+    function addSimulatedHistory() {
+        const randNum = Math.floor(Math.random() * 10);
+        const bs = randNum >= 5 ? 'Big' : 'Small';
+        let color = randNum % 2 === 0 ? '#ef4444' : '#22c55e';
+        if(randNum === 0 || randNum === 5) color = '#a855f7';
+
+        const tbody = document.getElementById('history-rows');
+        const newRow = `<tr><td>...${Math.floor(1000 + Math.random()*9000)}</td><td>${randNum}</td><td>${bs}</td><td><span class="dot" style="background:${color}"></span></td></tr>`;
+        tbody.innerHTML = newRow + tbody.innerHTML;
     }
 
     function openUtrModal() {
@@ -246,12 +335,4 @@
     function submitUtr() {
         const val = document.getElementById('utr-code').value;
         if(val.length < 12) {
-            alert('Please enter a valid 12-digit UTR');
-            return;
-        }
-        showPopupMessage('UTR submitted successfully! Waiting for verification.');
-        closeUtrModal();
-    }
-</script>
-</body>
-</html>
+            showPop
