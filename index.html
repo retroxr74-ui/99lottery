@@ -3,25 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>99Lottery</title>
+    <title>99Lottery - WinGo</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #0f172a; color: white; display: flex; justify-content: center; min-height: 100vh; }
         .app-container { width: 100%; max-width: 480px; background: #1e293b; padding: 15px; min-height: 100vh; }
         .header { text-align: center; font-size: 24px; font-weight: bold; color: #38bdf8; margin-bottom: 15px; }
-        .card { background: #334155; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        .balance-title { font-size: 14px; color: #94a3b8; }
-        .balance-amount { font-size: 28px; font-weight: bold; color: #4ade80; margin: 5px 0; }
+        .card { background: #334155; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+        .balance-title { font-size: 13px; color: #94a3b8; }
+        .balance-amount { font-size: 30px; font-weight: bold; color: #4ade80; margin: 5px 0; }
+        
+        /* Auth */
         .auth-box { display: flex; flex-direction: column; gap: 10px; }
-        input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #475569; background: #0f172a; color: white; }
-        button { width: 100%; padding: 12px; border: none; border-radius: 6px; background: #38bdf8; color: black; font-weight: bold; cursor: pointer; }
-        .bet-buttons { display: flex; gap: 10px; margin-top: 10px; }
-        .btn-green { background: #22c55e; color: white; }
-        .btn-red { background: #ef4444; color: white; }
-        .btn-violet { background: #a855f7; color: white; }
+        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 14px; }
+        button { width: 100%; padding: 12px; border: none; border-radius: 8px; background: #38bdf8; color: black; font-weight: bold; cursor: pointer; }
+
+        /* Actions */
         .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .btn-deposit { background: #eab308; color: black; }
+        .btn-deposit { background: #f59e0b; color: white; }
         .btn-withdraw { background: #ec4899; color: white; }
+
+        /* Timer Box */
+        .timer-box { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 12px; border-radius: 8px; margin-bottom: 15px; }
+        .timer-clock { font-size: 24px; font-weight: bold; color: #ef4444; letter-spacing: 2px; }
+
+        /* Betting Area */
+        .color-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .btn-green { background: #22c55e; color: white; }
+        .btn-violet { background: #a855f7; color: white; }
+        .btn-red { background: #ef4444; color: white; }
+
+        .number-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 15px; }
+        .num-btn { background: #475569; color: white; padding: 10px 0; border-radius: 6px; font-weight: bold; font-size: 16px; text-align: center; }
+
+        /* History Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; text-align: center; }
+        th, td { padding: 8px; border-bottom: 1px solid #475569; }
+        th { color: #94a3b8; }
+        .dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; }
+        .dot-green { background: #22c55e; }
+        .dot-red { background: #ef4444; }
+        .dot-violet { background: #a855f7; }
+
         .hidden { display: none !important; }
     </style>
 </head>
@@ -32,7 +55,7 @@
 
     <!-- AUTH SECTION -->
     <div id="auth-section" class="card">
-        <h3 id="auth-title" style="margin-bottom:10px;">Login</h3>
+        <h3 id="auth-title" style="margin-bottom:12px;">Login</h3>
         <div class="auth-box">
             <input type="text" id="phone" placeholder="Mobile Number">
             <input type="password" id="password" placeholder="Password">
@@ -45,7 +68,7 @@
         </div>
     </div>
 
-    <!-- MAIN GAME SECTION (AFTER LOGIN) -->
+    <!-- GAME SECTION -->
     <div id="game-section" class="card hidden">
         <div class="balance-title">Available Balance</div>
         <div class="balance-amount" id="user-balance">₹0.00</div>
@@ -58,22 +81,78 @@
 
         <hr style="margin: 15px 0; border-color: #475569;">
 
-        <h3>WinGo 1Min Game</h3>
-        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">Select Color to Place Bet:</p>
+        <!-- TIMER & PERIOD -->
+        <div class="timer-box">
+            <div>
+                <div style="font-size:11px; color:#94a3b8;">WinGo 1Min</div>
+                <div style="font-size:14px; font-weight:bold;" id="period-no">20260804001</div>
+            </div>
+            <div class="timer-clock" id="timer">00:60</div>
+        </div>
 
-        <input type="number" id="bet-amount" placeholder="Bet Amount (Min ₹1)" value="10">
+        <!-- BET AMOUNT INPUT -->
+        <input type="number" id="bet-amount" placeholder="Bet Amount (Min ₹1)" value="10" style="margin-bottom:12px;">
 
-        <div class="bet-buttons">
+        <!-- COLOR BUTTONS -->
+        <div class="color-btns">
             <button class="btn-green" onclick="placeBet('Green')">Green</button>
             <button class="btn-violet" onclick="placeBet('Violet')">Violet</button>
             <button class="btn-red" onclick="placeBet('Red')">Red</button>
         </div>
+
+        <!-- NUMBER BUTTONS (0-9) -->
+        <div style="font-size: 12px; color: #94a3b8; margin-bottom: 8px;">Select Number:</div>
+        <div class="number-grid">
+            <button class="num-btn" style="color:#a855f7;" onclick="placeBet('0')">0</button>
+            <button class="num-btn" style="color:#22c55e;" onclick="placeBet('1')">1</button>
+            <button class="num-btn" style="color:#ef4444;" onclick="placeBet('2')">2</button>
+            <button class="num-btn" style="color:#22c55e;" onclick="placeBet('3')">3</button>
+            <button class="num-btn" style="color:#ef4444;" onclick="placeBet('4')">4</button>
+            <button class="num-btn" style="color:#a855f7;" onclick="placeBet('5')">5</button>
+            <button class="num-btn" style="color:#22c55e;" onclick="placeBet('6')">6</button>
+            <button class="num-btn" style="color:#ef4444;" onclick="placeBet('7')">7</button>
+            <button class="num-btn" style="color:#22c55e;" onclick="placeBet('8')">8</button>
+            <button class="num-btn" style="color:#ef4444;" onclick="placeBet('9')">9</button>
+        </div>
+
+        <!-- GAME HISTORY -->
+        <h4 style="margin-top:15px; margin-bottom:8px;">Game History</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Number</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody id="history-body">
+                <tr><td>20260804000</td><td>5</td><td><span class="dot dot-violet"></span></td></tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
 <script>
     let isRegistering = false;
     let currentUser = null;
+    let timeLeft = 60;
+
+    // Timer Logic
+    setInterval(() => {
+        timeLeft--;
+        if (timeLeft < 0) {
+            timeLeft = 60;
+            generateNewPeriod();
+        }
+        let sec = timeLeft < 10 ? '0' + timeLeft : timeLeft;
+        document.getElementById('timer').innerText = `00:${sec}`;
+    }, 1000);
+
+    function generateNewPeriod() {
+        const p = document.getElementById('period-no');
+        let currentP = parseInt(p.innerText);
+        p.innerText = currentP + 1;
+    }
 
     function toggleAuth() {
         isRegistering = !isRegistering;
@@ -130,6 +209,10 @@
     async function placeBet(selection) {
         const amount = document.getElementById('bet-amount').value;
         if (!currentUser) return alert("Pehle Login karein!");
+
+        if (timeLeft <= 5) {
+            return alert("Is round ka time khatam! Agle round mein bet lagayein.");
+        }
 
         const res = await fetch('/api/place-bet', {
             method: 'POST',
