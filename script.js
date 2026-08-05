@@ -1,4 +1,4 @@
-let coins = 100;
+let coins = 1000;
 let prediction = "";
 let timer = 10;
 
@@ -45,4 +45,4 @@ setInterval(function(){
         timer=10;
     }
 
-},100);
+},1000);
