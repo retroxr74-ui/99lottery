@@ -1,56 +1,106 @@
-body{
-    margin:0;
-    background:#111827;
-    color:white;
-    font-family:Arial,sans-serif;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Profile</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+<h2>My Dashboard</h2>
+
+<div class="menu">
+<a href="home.html">Home</a>
+<a href="profile.html">Profile</a>
+<a href="settings.html">Settings</a>
+<a href="#" onclick="logout()">Logout</a>
+</div>
+
+</div>
+
+<div class="profile">
+
+<img src="https://i.pravatar.cc/150?img=12" alt="Avatar">
+
+<h3 id="name">Loading...</h3>
+
+<p id="email"></p>
+
+<p id="username"></p>
+
+<button class="btn" onclick="editProfile()">
+Edit Profile
+</button>
+
+<br><br>
+
+<button class="btn" onclick="logout()">
+Logout
+</button>
+
+</div>
+
+<script>
+
+const user = JSON.parse(localStorage.getItem("demoUser"));
+
+if(user){
+
+document.getElementById("name").innerHTML =
+user.name;
+
+document.getElementById("email").innerHTML =
+"Email : " + user.email;
+
+document.getElementById("username").innerHTML =
+"Username : " + user.username;
+
+}else{
+
+window.location.href="index.html";
+
 }
 
-.container{
-    max-width:400px;
-    margin:30px auto;
-    text-align:center;
-    padding:20px;
+function editProfile(){
+
+const newName =
+prompt("Enter New Name",user.name);
+
+if(newName){
+
+user.name = newName;
+
+localStorage.setItem(
+"demoUser",
+JSON.stringify(user)
+);
+
+location.reload();
+
 }
 
-.timer,.score{
-    background:#1f2937;
-    margin:10px 0;
-    padding:15px;
-    border-radius:10px;
 }
 
-.buttons{
-    display:flex;
-    justify-content:space-between;
-    margin:20px 0;
+function logout(){
+
+localStorage.removeItem("demoUser");
+
+alert("Logout Successful");
+
+window.location.href="index.html";
+
 }
 
-button{
-    width:30%;
-    padding:15px;
-    border:none;
-    color:white;
-    font-size:18px;
-    border-radius:10px;
-    cursor:pointer;
-}
+</script>
 
-.green{background:#16a34a;}
-.red{background:#dc2626;}
-.violet{background:#9333ea;}
-
-button:hover{
-    opacity:.9;
-}
-
-ul{
-    list-style:none;
-    padding:0;
-}
-
-li{
-    background:#1f2937;
-    margin:8px 0;
-    padding:10px;
-    border-radius:8px;
-}
+</body>
+</html>
