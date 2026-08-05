@@ -1,1 +1,125 @@
+/* ========= Tablet ========= */
+@media (max-width: 992px){
 
+.container{
+    width:95%;
+    padding:15px;
+}
+
+.dashboard{
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.navbar{
+    padding:12px 15px;
+}
+
+.menu{
+    gap:10px;
+}
+
+.profile{
+    width:95%;
+}
+
+}
+
+
+/* ========= Mobile ========= */
+@media (max-width:768px){
+
+.navbar{
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.menu{
+    width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    margin-top:10px;
+}
+
+.menu a{
+    width:48%;
+    text-align:center;
+    background:#1d4ed8;
+    padding:10px;
+    border-radius:8px;
+}
+
+.dashboard{
+    grid-template-columns:1fr;
+}
+
+.card{
+    padding:20px;
+}
+
+.profile{
+    padding:20px;
+}
+
+.profile img{
+    width:90px;
+    height:90px;
+}
+
+.btn{
+    padding:14px;
+    font-size:16px;
+}
+
+}
+
+
+/* ========= Small Mobile ========= */
+@media (max-width:480px){
+
+.container{
+    margin:20px auto;
+    padding:10px;
+}
+
+.logo{
+    font-size:24px;
+}
+
+h2{
+    font-size:22px;
+}
+
+.input-group input{
+    font-size:15px;
+}
+
+.btn{
+    font-size:15px;
+}
+
+.navbar h2{
+    font-size:20px;
+}
+
+.menu a{
+    width:100%;
+    margin-bottom:8px;
+}
+
+.box{
+    padding:15px;
+}
+
+.profile h3{
+    font-size:20px;
+}
+
+.profile p{
+    font-size:14px;
+}
+
+}
+
+
+/
