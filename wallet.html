@@ -1,15 +1,188 @@
-const express = require("express");
-const path = require("path");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wallet</title>
 
-const app = express();
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
 
-app.use(express.static(path.join(__dirname)));
+<style>
+.balance-card{
+background:#2563eb;
+color:#fff;
+padding:25px;
+border-radius:12px;
+text-align:center;
+margin-bottom:20px;
+}
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
+.balance-card h1{
+font-size:38px;
+margin:10px 0;
+}
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+.wallet-actions{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+gap:15px;
+margin-top:20px;
+}
+
+.action-card{
+background:#fff;
+padding:20px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+text-align:center;
+}
+
+.history{
+margin-top:25px;
+background:#fff;
+padding:15px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.history table{
+width:100%;
+border-collapse:collapse;
+}
+
+.history th,
+.history td{
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:left;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+<h2>My Dashboard</h2>
+
+<div class="menu">
+<a href="home.html">Home</a>
+<a href="profile.html">Profile</a>
+<a href="wallet.html">Wallet</a>
+<a href="settings.html">Settings</a>
+</div>
+</div>
+
+<div class="container">
+
+<div class="balance-card">
+<h3>Demo Wallet</h3>
+<h1 id="balance">1000</h1>
+<p>Virtual Points</p>
+</div>
+
+<div class="wallet-actions">
+
+<div class="action-card">
+<h3>Add Demo Points</h3>
+<button class="btn" onclick="addPoints()">Add</button>
+</div>
+
+<div class="action-card">
+<h3>Use Demo Points</h3>
+<button class="btn" onclick="usePoints()">Use</button>
+</div>
+
+</div>
+
+<div class="history">
+
+<h3>Activity</h3>
+
+<table>
+
+<tr>
+<th>Date</th>
+<th>Type</th>
+<th>Amount</th>
+</tr>
+
+<tbody id="historyBody">
+
+<tr>
+<td>-</td>
+<td>No Activity</td>
+<td>-</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+let balance =
+Number(localStorage.getItem("walletBalance")) || 1000;
+
+document.getElementById("balance").innerText = balance;
+
+function updateBalance(){
+
+document.getElementById("balance").innerText = balance;
+
+localStorage.setItem("walletBalance",balance);
+
+}
+
+function addHistory(type,amount){
+
+const row = document.createElement("tr");
+
+row.innerHTML=
+`
+<td>${new Date().toLocaleDateString()}</td>
+<td>${type}</td>
+<td>${amount}</td>
+`;
+
+document.getElementById("historyBody").prepend(row);
+
+}
+
+function addPoints(){
+
+balance += 100;
+
+updateBalance();
+
+addHistory("Added","+100");
+
+}
+
+function usePoints(){
+
+if(balance>=50){
+
+balance -= 50;
+
+updateBalance();
+
+addHistory("Used","-50");
+
+}else{
+
+alert("Not enough demo points.");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
