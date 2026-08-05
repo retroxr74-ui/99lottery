@@ -1,7 +1,91 @@
-{
-  "name": "real",
-  "version": "1.0.0",
-  "scripts": {
-    "start": "node server.js"
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Dashboard</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+
+<div class="navbar">
+<h2>My Dashboard</h2>
+
+<div class="menu">
+<a href="home.html">Home</a>
+<a href="profile.html">Profile</a>
+<a href="settings.html">Settings</a>
+<a href="#" onclick="logout()">Logout</a>
+</div>
+
+</div>
+
+<div class="dashboard">
+
+<div class="box">
+<h3>Welcome</h3>
+<p id="username">Loading...</p>
+</div>
+
+<div class="box">
+<h3>Total Users</h3>
+<h2>120</h2>
+</div>
+
+<div class="box">
+<h3>Messages</h3>
+<h2>18</h2>
+</div>
+
+<div class="box">
+<h3>Notifications</h3>
+<h2>7</h2>
+</div>
+
+<div class="box">
+<h3>Latest Activity</h3>
+<p>Welcome to your dashboard.</p>
+</div>
+
+<div class="box">
+<h3>Profile</h3>
+<p>View and edit your profile.</p>
+<a href="profile.html">
+<button class="btn">Open Profile</button>
+</a>
+</div>
+
+</div>
+
+<script>
+
+const user = JSON.parse(localStorage.getItem("demoUser"));
+
+if(user){
+
+document.getElementById("username").innerHTML =
+user.name;
+
+}else{
+
+window.location.href="index.html";
+
 }
+
+function logout(){
+
+localStorage.removeItem("demoUser");
+
+alert("Logged Out");
+
+window.location.href="index.html";
+
+}
+
+</script>
+
+</body>
+</html>
