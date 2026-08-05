@@ -45,4 +45,4 @@ setInterval(function(){
         timer=10;
     }
 
-},1000);
+},100);
