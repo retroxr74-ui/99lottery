@@ -3,213 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Real Admin Dashboard</title>
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+<title>Register</title>
 
-body{
-background:#111827;
-color:white;
-display:flex;
-}
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
 
-.sidebar{
-width:240px;
-height:100vh;
-background:#1f2937;
-padding:20px;
-}
-
-.sidebar h2{
-margin-bottom:25px;
-}
-
-.sidebar a{
-display:block;
-padding:12px;
-margin-bottom:10px;
-text-decoration:none;
-color:white;
-background:#374151;
-border-radius:8px;
-}
-
-.sidebar a:hover{
-background:#2563eb;
-}
-
-.main{
-flex:1;
-padding:20px;
-}
-
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-}
-
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:15px;
-margin-bottom:25px;
-}
-
-.card{
-background:#1f2937;
-padding:20px;
-border-radius:12px;
-text-align:center;
-}
-
-.card h3{
-font-size:28px;
-margin-top:10px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-background:#1f2937;
-}
-
-th,td{
-padding:14px;
-text-align:left;
-border-bottom:1px solid #374151;
-}
-
-th{
-background:#374151;
-}
-
-.status{
-padding:5px 12px;
-border-radius:6px;
-background:#16a34a;
-}
-
-.log{
-margin-top:25px;
-background:#1f2937;
-padding:20px;
-border-radius:12px;
-}
-
-button{
-padding:10px 18px;
-border:none;
-background:#2563eb;
-color:white;
-border-radius:8px;
-cursor:pointer;
-}
-
-button:hover{
-background:#1d4ed8;
-}
-
-@media(max-width:700px){
-body{
-flex-direction:column;
-}
-.sidebar{
-width:100%;
-height:auto;
-}
-}
-</style>
 </head>
-
 <body>
 
-<div class="sidebar">
-<h2>ADMIN</h2>
-
-<a href="#">Dashboard</a>
-<a href="#">Users</a>
-<a href="#">Reports</a>
-<a href="#">Activity</a>
-<a href="#">Settings</a>
-
-</div>
-
-<div class="main">
-
-<div class="header">
-<h1>Dashboard</h1>
-<button onclick="refreshData()">Refresh</button>
-</div>
-
-<div class="cards">
+<div class="container">
 
 <div class="card">
-<p>Total Users</p>
-<h3 id="users">1245</h3>
+
+<div class="logo">
+My Dashboard
 </div>
 
-<div class="card">
-<p>Online Users</p>
-<h3 id="online">186</h3>
+<h2>Create Account</h2>
+
+<form id="registerForm">
+
+<div class="input-group">
+<label>Full Name</label>
+<input type="text" id="name" placeholder="Enter your full name" required>
 </div>
 
-<div class="card">
-<p>Reports</p>
-<h3 id="reports">12</h3>
+<div class="input-group">
+<label>Email</label>
+<input type="email" id="email" placeholder="Enter your email" required>
 </div>
 
-<div class="card">
-<p>System Status</p>
-<h3>Running</h3>
+<div class="input-group">
+<label>Username</label>
+<input type="text" id="username" placeholder="Choose a username" required>
 </div>
 
+<div class="input-group">
+<label>Password</label>
+<input type="password" id="password" placeholder="Create password" required>
 </div>
 
-<h2>User List</h2>
+<div class="input-group">
+<label>Confirm Password</label>
+<input type="password" id="confirmPassword" placeholder="Confirm password" required>
+</div>
 
-<table>
+<button type="submit" class="btn">
+Register
+</button>
 
-<tr>
-<th>Name</th>
-<th>ID</th>
-<th>Status</th>
-</tr>
+</form>
 
-<tr>
-<td>Rahul</td>
-<td>#1001</td>
-<td><span class="status">Active</span></td>
-</tr>
-
-<tr>
-<td>Aman</td>
-<td>#1002</td>
-<td><span class="status">Active</span></td>
-</tr>
-
-<tr>
-<td>Riya</td>
-<td>#1003</td>
-<td><span class="status">Active</span></td>
-</tr>
-
-</table>
-
-<div class="log">
-
-<h2>Activity Log</h2>
-
-<p id="activity">
-System Started Successfully.
-</p>
+<div class="link">
+Already have an account?
+<a href="index.html">Login</a>
+</div>
 
 </div>
 
@@ -217,22 +66,39 @@ System Started Successfully.
 
 <script>
 
-function refreshData(){
+document.getElementById("registerForm").addEventListener("submit",function(e){
 
-document.getElementById("users").innerHTML=
-1200+Math.floor(Math.random()*100);
+e.preventDefault();
 
-document.getElementById("online").innerHTML=
-150+Math.floor(Math.random()*100);
+const name=document.getElementById("name").value;
+const email=document.getElementById("email").value;
+const username=document.getElementById("username").value;
+const password=document.getElementById("password").value;
+const confirm=document.getElementById("confirmPassword").value;
 
-document.getElementById("reports").innerHTML=
-Math.floor(Math.random()*20);
+if(password!==confirm){
 
-document.getElementById("activity").innerHTML=
-"Dashboard refreshed at "+
-new Date().toLocaleTimeString();
+alert("Passwords do not match.");
+return;
 
 }
+
+const user={
+
+name:name,
+email:email,
+username:username,
+password:password
+
+};
+
+localStorage.setItem("demoUser",JSON.stringify(user));
+
+alert("Registration Successful!");
+
+window.location.href="index.html";
+
+});
 
 </script>
 
