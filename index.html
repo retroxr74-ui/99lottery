@@ -1,43 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Real Color Prediction Game</title>
-<link rel="stylesheet" href="style.css">
+
+<title>Login</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+
 </head>
+
 <body>
 
 <div class="container">
-    <h1>🎨 Real Color Prediction</h1>
 
-    <div class="timer">
-        Next Round In:
-        <h2 id="countdown">10</h2>
-    </div>
+<div class="card">
 
-    <div class="score">
-        Virtual Coins:
-        <span id="coins">100</span>
-    </div>
-
-    <div class="buttons">
-        <button class="green" onclick="predict('Green')">Green</button>
-        <button class="violet" onclick="predict('Violet')">Violet</button>
-        <button class="red" onclick="predict('Red')">Red</button>
-    </div>
-
-    <h3>Your Prediction</h3>
-    <p id="prediction">None</p>
-
-    <h3>Result</h3>
-    <p id="result">Waiting...</p>
-
-    <h3>History</h3>
-    <ul id="history"></ul>
+<div class="logo">
+My Dashboard
 </div>
 
-<script src="script.js"></script>
+<h2>Login</h2>
+
+<form id="loginForm">
+
+<div class="input-group">
+<label>Username</label>
+<input
+type="text"
+id="username"
+placeholder="Enter Username"
+required>
+</div>
+
+<div class="input-group">
+<label>Password</label>
+<input
+type="password"
+id="password"
+placeholder="Enter Password"
+required>
+</div>
+
+<button class="btn" type="submit">
+Login
+</button>
+
+</form>
+
+<div class="link">
+Don't have an account?
+<a href="register.html">
+Register
+</a>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document
+.getElementById("loginForm")
+.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const username=
+document.getElementById("username").value;
+
+const password=
+document.getElementById("password").value;
+
+const user=
+JSON.parse(localStorage.getItem("demoUser"));
+
+if(user==null){
+
+alert("Please Register First");
+
+return;
+
+}
+
+if(
+username===user.username &&
+password===user.password
+){
+
+alert("Login Successful");
+
+window.location.href="home.html";
+
+}else{
+
+alert("Invalid Username or Password");
+
+}
+
+});
+
+</script>
 
 </body>
 </html>
